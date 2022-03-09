@@ -42,7 +42,7 @@ class GameManager {
 
     start(name) {
         this.scene = new Scene(name);
-        this.controlReader = setInterval(this.readControl, 50, this);
+        this.controlReader = setInterval(this.readControl, 100, this);
 
         requestAnimationFrame(this.render);
     }
