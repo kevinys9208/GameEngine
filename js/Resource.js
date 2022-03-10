@@ -17,11 +17,12 @@ let CR = [
 let TILE_SIZE = 36;
 let TILE_HALF = 18;
 
-let MW = 1440;
-let MH = 2880;
 let MR = [
-    { key: 'map_001', src: '../resources/map/map_001.png' },
-    { key: 'map_002', src: '../resources/map/map_002.png' }
+    { key: 'map_001', src: '../resources/map/map_001.png' }
 ];
 
-export { TILE_SIZE, TILE_HALF, WF, CS, CW, CH, CR, MW, MH, MR };
+let OR = [
+    { key: 'tree_stump', src: '../resources/obstacle/tree_stump.png' }  
+];
+
+export { TILE_SIZE, TILE_HALF, WF, CS, CW, CH, CR, MR, OR };

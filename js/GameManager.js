@@ -1,4 +1,4 @@
-import { CR, MR } from './Resource.js'
+import { CR, MR, OR } from './Resource.js'
 
 import SrcManager from './SrcManager.js'
 import Scene from './scene.js';
@@ -26,6 +26,7 @@ class GameManager {
     async #initResource() {
         await SrcManager.createGroup('character', CR);
         await SrcManager.createGroup('map', MR);
+        await SrcManager.createGroup('obstacle', OR);
     }
 
     #initControl() {
@@ -41,7 +42,9 @@ class GameManager {
     }
 
     start(name) {
-        this.scene = new Scene(name);
+        this.mainScene = new Scene(name,'map_001', 1440, 1440);
+        this.mainScene.createObstacle('tree_stump', 9, 9, 2, 2);
+
         this.controlReader = setInterval(this.readControl, 100, this);
 
         requestAnimationFrame(this.render);
@@ -72,7 +75,7 @@ class GameManager {
             dir = Scene.WW;
         }
 
-        this.scene.character.updateDir(dir);
+        this.mainScene.character.updateDir(dir);
     }
 
     render() {
@@ -85,7 +88,7 @@ class GameManager {
                 GAME_MANAGER.canvas.height
             );
 
-        GAME_MANAGER.scene.draw();
+        GAME_MANAGER.mainScene.draw();
 
         requestAnimationFrame(GAME_MANAGER.render);
     }

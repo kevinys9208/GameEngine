@@ -1,8 +1,9 @@
-import { TILE_SIZE, TILE_HALF, CS, MW, MH } from './resource.js';
+import { TILE_SIZE, TILE_HALF, CS } from './resource.js';
 
 import SceneMap from './Map.js'
 import Character from './character.js'
 import GameManager from './GameManager.js';
+import Obstacle from './Obstacle.js';
 
 export default class Scene {
 
@@ -16,8 +17,8 @@ export default class Scene {
     static WW = 7;
     static NW = 8;
 
-    constructor(name) {
-        this.map = new SceneMap('map_002');
+    constructor(name, map, widht, height) {
+        this.map = new SceneMap(map, widht, height);
         this.character = new Character(name);
 
         this.objectMap = new Map();
@@ -138,15 +139,15 @@ export default class Scene {
         if (orthoX < TILE_HALF) {
             orthoX = TILE_HALF;
 
-        } else if (orthoX > MW - TILE_HALF) {
-            orthoX = MW - TILE_HALF
+        } else if (orthoX > this.map.width - TILE_HALF) {
+            orthoX = this.map.width - TILE_HALF
         }
 
         if (orthoY < TILE_HALF) {
             orthoY = TILE_HALF;
 
-        } else if (orthoY > MH - TILE_HALF) {
-            orthoY = MH - TILE_HALF
+        } else if (orthoY > this.map.height - TILE_HALF) {
+            orthoY = this.map.height - TILE_HALF
         }
 
         t.orthoX = orthoX;
@@ -162,7 +163,7 @@ export default class Scene {
             case Scene.NE:
                 var ne = new Object();
                 ne.x = Math.floor((orthoX + TILE_HALF) / TILE_SIZE);
-                if (ne.x > (MW / TILE_SIZE) - 1) {
+                if (ne.x > (this.map.width / TILE_SIZE) - 1) {
                     break;
                 }
                 
@@ -171,9 +172,16 @@ export default class Scene {
                     break;
                 }
 
-                if (this.map.resource[ne.y][ne.x] == 1) {
-                    orthoX = this.character.orthoX;
-                    orthoY = this.character.orthoY;
+                if (this.map.resource[ne.y][ne.x] != 0) {
+                    var obstacle = this.objectMap.get(this.map.resource[ne.y][ne.x]);
+
+                    if ((obstacle.coordY + obstacle.rangeY) * TILE_SIZE <= this.character.orthoY - TILE_HALF) {
+                        orthoY = (obstacle.coordY + obstacle.rangeY) * TILE_SIZE + TILE_HALF;
+
+                    } else {
+                        orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
+                    }
+
                     isCollision = true;
                 }
                 break;
@@ -181,18 +189,25 @@ export default class Scene {
             case Scene.SE:
                 var se = new Object();
                 se.x = Math.floor((orthoX + TILE_HALF) / TILE_SIZE);
-                if (se.x > (MW / TILE_SIZE) - 1) {
+                if (se.x > (this.map.width / TILE_SIZE) - 1) {
                     break;
                 }
 
                 se.y = Math.floor((orthoY + TILE_HALF) / TILE_SIZE);
-                if (se.y > (MH / TILE_SIZE) - 1) {
+                if (se.y > (this.map.height / TILE_SIZE) - 1) {
                     break;
                 }
         
-                if (this.map.resource[se.y][se.x] == 1) {
-                    orthoX = this.character.orthoX;
-                    orthoY = this.character.orthoY;
+                if (this.map.resource[se.y][se.x] != 0) {
+                    var obstacle = this.objectMap.get(this.map.resource[se.y][se.x]);
+
+                    if (obstacle.coordX * TILE_SIZE >= this.character.orthoX + TILE_HALF) {
+                        orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
+
+                    } else {
+                        orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
+                    }
+
                     isCollision = true;
                 }
                 break;
@@ -205,13 +220,20 @@ export default class Scene {
                 }
 
                 sw.y = Math.floor((orthoY + TILE_HALF) / TILE_SIZE);
-                if (sw.y > (MH / TILE_SIZE) - 1) {
+                if (sw.y > (this.map.height / TILE_SIZE) - 1) {
                     break;
                 }
         
-                if (this.map.resource[sw.y][sw.x] == 1) {
-                    orthoX = this.character.orthoX;
-                    orthoY = this.character.orthoY;
+                if (this.map.resource[sw.y][sw.x] != 0) {
+                    var obstacle = this.objectMap.get(this.map.resource[sw.y][sw.x]);
+
+                    if (obstacle.coordY * TILE_SIZE >= this.character.orthoY + TILE_HALF) {
+                        orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
+
+                    } else {
+                        orthoX = (obstacle.coordX + obstacle.rangeX)  * TILE_SIZE + TILE_HALF;
+                    }
+
                     isCollision = true;
                 }
                 break;
@@ -228,9 +250,16 @@ export default class Scene {
                     break;
                 }
         
-                if (this.map.resource[nw.y][nw.x] == 1) {
-                    orthoX = this.character.orthoX;
-                    orthoY = this.character.orthoY;
+                if (this.map.resource[nw.y][nw.x] != 0) {
+                    var obstacle = this.objectMap.get(this.map.resource[nw.y][nw.x]);
+
+                    if ((obstacle.coordX + obstacle.rangeX) * TILE_SIZE <= this.character.orthoX - TILE_HALF) {
+                        orthoX = (obstacle.coordX + obstacle.rangeX) * TILE_SIZE + TILE_HALF;
+
+                    } else {
+                        orthoY = (obstacle.coordY + obstacle.rangeY)  * TILE_SIZE + TILE_HALF;
+                    }
+
                     isCollision = true;
                 }
                 break;
@@ -281,7 +310,25 @@ export default class Scene {
         }
 
         return a;
-      }
+    }
+
+    createObstacle(img, coordX, coordY, rangeX, rangeY) {
+        var x = (coordX * TILE_SIZE + (coordX + rangeX) * TILE_SIZE) / 2;
+        var y = (coordY * TILE_SIZE + (coordY + rangeY) * TILE_SIZE) / 2;
+
+        var obstacle = new Obstacle(
+                                img, 
+                                this.#getScreenX(x, y),
+                                this.#getScreenY(x, y),
+                                coordX,
+                                coordY,
+                                rangeX,
+                                rangeY
+                            );
+
+        this.objectMap.set(obstacle.id, obstacle);
+        this.map.setObstacle(obstacle);
+    }
 
     draw() {
         this

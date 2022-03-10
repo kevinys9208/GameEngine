@@ -1,22 +1,32 @@
-import { MW, MH } from './resource.js';
-import * as MapResource from './MapResource.js';
+import { TILE_SIZE } from './Resource.js';
 
 import SrcManager from './SrcManager.js';
 import GameManager from './GameManager.js';
 
 export default class Map {
 
-    constructor(img) {
-        this.img = SrcManager.getGroup('map').get(img);
-        this.resource = MapResource[img];
-        
-        this.width = MW;
-        this.height = MH;
+    static create
 
-        this.offsetX = (this.img.width - (MW - MH)) / 2;
-        this.offsetY = (this.img.height - (MW + MH) / 2) / 2;
+    constructor(img, width, height) {
+        this.img = SrcManager.getGroup('map').get(img);
+        
+        this.width = width;
+        this.height = height;
+
+        this.resource = Array.from(Array(height / TILE_SIZE), () => Array(width / TILE_SIZE).fill(0));
+
+        this.offsetX = (this.img.width - (width - height)) / 2;
+        this.offsetY = (this.img.height - (width + height) / 2) / 2;
 
         console.log('Screen offset => x: ' + this.offsetX + ', y: ' + this.offsetY);
+    }
+
+    setObstacle(o) {
+        for (let i = 0; i < o.rangeY; i++) {
+            for (let j = 0; j < o.rangeX; j++) {
+                this.resource[o.coordY + i][o.coordX + j] = o.id;
+            }
+        }
     }
 
     getOriginX() {
