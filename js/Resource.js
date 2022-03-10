@@ -18,7 +18,8 @@ let TILE_SIZE = 36;
 let TILE_HALF = 18;
 
 let MR = [
-    { key: 'map_001', src: '../resources/map/map_001.png' }
+    { key: 'map_001', src: '../resources/map/map_001.png' },
+    { key: 'map_002', src: '../resources/map/map_002.png' }
 ];
 
 let OR = [
