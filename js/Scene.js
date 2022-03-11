@@ -129,11 +129,8 @@ export default class Scene {
             var dir = (index + 1) * 2;
             var obj = this.#checkCollision(dir, orthoX, orthoY);
 
-            if (obj.isCollision) {
-                orthoX = obj.x;
-                orthoY = obj.y;
-                break;
-            }
+            orthoX = obj.x;
+            orthoY = obj.y;
         }
 
         if (orthoX < TILE_HALF) {
@@ -157,8 +154,6 @@ export default class Scene {
     }
 
     #checkCollision(dir, orthoX, orthoY) {
-        let isCollision = false;
-
         switch (dir) {
             case Scene.NE:
                 var ne = new Object();
@@ -181,8 +176,6 @@ export default class Scene {
                     } else {
                         orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
                     }
-
-                    isCollision = true;
                 }
                 break;
 
@@ -207,8 +200,6 @@ export default class Scene {
                     } else {
                         orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
                     }
-
-                    isCollision = true;
                 }
                 break;
 
@@ -233,8 +224,6 @@ export default class Scene {
                     } else {
                         orthoX = (obstacle.coordX + obstacle.rangeX)  * TILE_SIZE + TILE_HALF;
                     }
-
-                    isCollision = true;
                 }
                 break;
 
@@ -259,13 +248,11 @@ export default class Scene {
                     } else {
                         orthoY = (obstacle.coordY + obstacle.rangeY)  * TILE_SIZE + TILE_HALF;
                     }
-
-                    isCollision = true;
                 }
                 break;
         }
 
-        return { x: orthoX, y: orthoY, isCollision: isCollision };
+        return { x: orthoX, y: orthoY };
     }
 
     #getOrthoX(x, y) {
@@ -337,7 +324,19 @@ export default class Scene {
 
         Array
             .from(this.objectMap.values())
-            .sort((a, b) => a.y - b.y)
+            .sort((a, b) => {
+                var aX = this.#getOrthoX(a.x, a.y);
+                var bX = this.#getOrthoX(b.x, b.y);
+
+                if (aX - bX > 0) {
+                    return 1;
+                }
+
+                var aY = this.#getOrthoY(a.x, a.y);
+                var bY = this.#getOrthoY(b.x, b.y);
+
+                return bY - aY;
+            })
             .forEach((o) => o.draw(this.map));
     }
 }

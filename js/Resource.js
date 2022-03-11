@@ -23,7 +23,8 @@ let MR = [
 ];
 
 let OR = [
-    { key: 'tree_stump', src: '../resources/obstacle/tree_stump.png' }  
+    { key: 'wall_h', src: '../resources/obstacle/wall_h.png' },
+    { key: 'wall_v', src: '../resources/obstacle/wall_v.png' }
 ];
 
 export { TILE_SIZE, TILE_HALF, WF, CS, CW, CH, CR, MR, OR };

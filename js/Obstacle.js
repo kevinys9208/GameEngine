@@ -3,10 +3,16 @@ import SrcManager from './SrcManager.js';
 
 export default class Obstacle {
 
-    constructor(img, x, y, coordX, coordY, rangeX, rangeY, width = 300, height = 300) {
+    constructor(img, x, y, coordX, coordY, rangeX, rangeY) {
         this.id = ++GameManager.id;
 
-        this.img = SrcManager.getGroup('obstacle').get(img);
+        if (img != null) {
+            this.img = SrcManager.getGroup('obstacle').get(img);
+            
+        } else {
+            this.img = null;
+        }
+       
 
         this.x = x;
         this.y = y;
@@ -16,12 +22,13 @@ export default class Obstacle {
 
         this.rangeX = rangeX;
         this.rangeY = rangeY;
-
-        this.width = rangeX * width;
-        this.height = rangeY * height;
     }
 
     draw(map) {
+        if (this.img == null) {
+            return;
+        }
+
         GameManager
             .ctx
             .drawImage(
@@ -30,10 +37,10 @@ export default class Obstacle {
                 0,
                 this.img.width,
                 this.img.height,
-                this.x - map.getOriginX() - (this.width / 2),
-                this.y - map.getOriginY() - (this.height / 2),
-                this.width,
-                this.height
+                this.x - map.getOriginX() - (this.img.width / 2),
+                this.y - map.getOriginY() - (this.img.height / 2),
+                this.img.width,
+                this.img.height
             );
     }
 }

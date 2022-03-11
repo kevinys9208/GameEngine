@@ -42,8 +42,14 @@ class GameManager {
     }
 
     start(name) {
-        this.mainScene = new Scene(name,'map_001', 1440, 1440);
-        this.mainScene.createObstacle('tree_stump', 9, 9, 2, 2);
+        this.mainScene = new Scene(name,'map_002', 1440, 1440);
+        // back wall
+        this.mainScene.createObstacle(null, 0, 0, 1, 40);
+        this.mainScene.createObstacle(null, 0, 0, 40, 1);
+
+        this.mainScene.createObstacle('wall_h', 0, 39, 40, 1);
+        this.mainScene.createObstacle('wall_v', 39, 0, 1, 40);
+        
 
         this.controlReader = setInterval(this.readControl, 100, this);
 
