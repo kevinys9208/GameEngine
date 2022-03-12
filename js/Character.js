@@ -13,6 +13,9 @@ export default class Character {
         this.width = width;
         this.height = height;
 
+        this.rangeX = 1;
+        this.rangeY = 1;
+
         this.offsetX = 0;
         this.offsetY = 0;
 

@@ -24,7 +24,8 @@ let MR = [
 
 let OR = [
     { key: 'wall_h', src: '../resources/obstacle/wall_h.png' },
-    { key: 'wall_v', src: '../resources/obstacle/wall_v.png' }
+    { key: 'wall_v', src: '../resources/obstacle/wall_v.png' },
+    { key: 'block_c', src: '../resources/obstacle/block_c.png' }
 ];
 
 export { TILE_SIZE, TILE_HALF, WF, CS, CW, CH, CR, MR, OR };

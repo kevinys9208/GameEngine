@@ -43,18 +43,34 @@ class GameManager {
 
     start(name) {
         this.mainScene = new Scene(name,'map_002', 1440, 1440);
+
         // back wall
         this.mainScene.createObstacle(null, 0, 0, 1, 40);
         this.mainScene.createObstacle(null, 0, 0, 40, 1);
 
+        // front wall
         this.mainScene.createObstacle('wall_h', 0, 39, 40, 1);
         this.mainScene.createObstacle('wall_v', 39, 0, 1, 40);
-        
+
+        for (let index = 0; index < 8; index++) {
+            this.mainScene.createObstacle(
+                                        'block_c', 
+                                        this.#getRandomInt(4, 35), 
+                                        this.#getRandomInt(4, 35), 
+                                        1, 
+                                        1
+                                    );
+        }
 
         this.controlReader = setInterval(this.readControl, 100, this);
 
         requestAnimationFrame(this.render);
     }
+
+    #getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    
 
     readControl(gm) {
         gm.readDirection();

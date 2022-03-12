@@ -157,12 +157,12 @@ export default class Scene {
         switch (dir) {
             case Scene.NE:
                 var ne = new Object();
-                ne.x = Math.floor((orthoX + TILE_HALF) / TILE_SIZE);
+                ne.x = parseInt((orthoX + TILE_HALF) / TILE_SIZE);
                 if (ne.x > (this.map.width / TILE_SIZE) - 1) {
                     break;
                 }
                 
-                ne.y = Math.floor((orthoY - TILE_HALF) / TILE_SIZE);
+                ne.y = parseInt((orthoY - TILE_HALF) / TILE_SIZE);
                 if (ne.y < 0) {
                     break;
                 }
@@ -181,12 +181,12 @@ export default class Scene {
 
             case Scene.SE:
                 var se = new Object();
-                se.x = Math.floor((orthoX + TILE_HALF) / TILE_SIZE);
+                se.x = parseInt((orthoX + TILE_HALF) / TILE_SIZE);
                 if (se.x > (this.map.width / TILE_SIZE) - 1) {
                     break;
                 }
 
-                se.y = Math.floor((orthoY + TILE_HALF) / TILE_SIZE);
+                se.y = parseInt((orthoY + TILE_HALF) / TILE_SIZE);
                 if (se.y > (this.map.height / TILE_SIZE) - 1) {
                     break;
                 }
@@ -205,12 +205,12 @@ export default class Scene {
 
             case Scene.SW:
                 var sw = new Object();
-                sw.x = Math.floor((orthoX - TILE_HALF) / TILE_SIZE);
+                sw.x = parseInt((orthoX - TILE_HALF) / TILE_SIZE);
                 if (sw.x < 0) {
                     break;
                 }
 
-                sw.y = Math.floor((orthoY + TILE_HALF) / TILE_SIZE);
+                sw.y = parseInt((orthoY + TILE_HALF) / TILE_SIZE);
                 if (sw.y > (this.map.height / TILE_SIZE) - 1) {
                     break;
                 }
@@ -229,12 +229,12 @@ export default class Scene {
 
             case Scene.NW:
                 var nw = new Object();
-                nw.x = Math.floor((orthoX - TILE_HALF) / TILE_SIZE);
+                nw.x = parseInt((orthoX - TILE_HALF) / TILE_SIZE);
                 if (nw.x < 0) {
                     break;
                 }
 
-                nw.y = Math.floor((orthoY - TILE_HALF) / TILE_SIZE);
+                nw.y = parseInt((orthoY - TILE_HALF) / TILE_SIZE);
                 if (nw.y < 0) {
                     break;
                 }
@@ -325,17 +325,13 @@ export default class Scene {
         Array
             .from(this.objectMap.values())
             .sort((a, b) => {
-                var aX = this.#getOrthoX(a.x, a.y);
-                var bX = this.#getOrthoX(b.x, b.y);
+                var aX = this.#getOrthoX(a.x, a.y) + (a.rangeX * TILE_HALF);
+                var aY = this.#getOrthoY(a.x, a.y) + (a.rangeY * TILE_HALF);
+                
+                var bX = this.#getOrthoX(b.x, b.y) + (b.rangeX * TILE_HALF);
+                var bY = this.#getOrthoY(b.x, b.y) + (b.rangeY * TILE_HALF);
 
-                if (aX - bX > 0) {
-                    return 1;
-                }
-
-                var aY = this.#getOrthoY(a.x, a.y);
-                var bY = this.#getOrthoY(b.x, b.y);
-
-                return bY - aY;
+                return (aX**2 + aY**2) - (bX**2 + bY**2);
             })
             .forEach((o) => o.draw(this.map));
     }
