@@ -1,4 +1,4 @@
-import { CR, MR, OR } from './Resource.js'
+import { CR, SR, MR, OR } from './Resource.js'
 
 import SrcManager from './SrcManager.js'
 import Scene from './scene.js';
@@ -27,6 +27,7 @@ class GameManager {
         await SrcManager.createGroup('character', CR);
         await SrcManager.createGroup('map', MR);
         await SrcManager.createGroup('obstacle', OR);
+        await SrcManager.createGroup('spell', SR);
     }
 
     #initControl() {
@@ -74,6 +75,7 @@ class GameManager {
 
     readControl(gm) {
         gm.readDirection();
+        gm.readAttack();
     }
 
     readDirection() {
@@ -98,6 +100,12 @@ class GameManager {
         }
 
         this.mainScene.character.updateDir(dir);
+    }
+
+    readAttack() {
+        if (this.controlMap.get('KeyA')) {
+            this.mainScene.character.attack();
+        }
     }
 
     render() {

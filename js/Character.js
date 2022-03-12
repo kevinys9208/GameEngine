@@ -1,17 +1,19 @@
-import { WF, CW, CH } from './resource.js';
+import { WF, CS, CW, CH } from './resource.js';
 
 import GameManager from './GameManager.js'
 import SrcManager from './SrcManager.js';
 import Scene from './scene.js';
+import Spell from './Spell.js';
 
 export default class Character {
 
-    constructor(name, width = 300, height = 300) {
+    constructor(name, scene) {
         this.id = ++GameManager.id;
         this.name = name;
+        this.scene = scene;
 
-        this.width = width;
-        this.height = height;
+        this.width = CW;
+        this.height = CH;
 
         this.rangeX = 1;
         this.rangeY = 1;
@@ -45,6 +47,20 @@ export default class Character {
         this.isIdle = false;
     }
 
+    updateX(dir, isDiagonal = 1) {
+        this.x += (CS * isDiagonal * (dir == Scene.EE ? 1 : -1));
+        this.scene.updateOrthoCoord(this);
+    }
+
+    updateY(dir, isDiagonal = 1) {
+        this.y += (CS * isDiagonal * (dir == Scene.SS ? 1 : -1));
+        this.scene.updateOrthoCoord(this);
+    }
+
+    attack() {
+        new Spell(this.x, this.y, this.dir, this.scene);
+    }
+
     draw(map) {
         var img = SrcManager.getGroup('character').get('walk_' + this.dir);
         var index = this.fIndex;
@@ -57,10 +73,10 @@ export default class Character {
             .ctx
             .drawImage(
                 img,
-                CW * index,
+                this.width * index,
                 0,
-                CW,
-                CH,
+                this.width,
+                this.height,
                 this.x - map.getOriginX() - (this.width / 2),
                 this.y - map.getOriginY() - (this.height / 2),
                 this.width,

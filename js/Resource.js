@@ -1,8 +1,9 @@
 let WF = 24;
+let SF = 59;
 
 let CS = 4;
-let CW = 300;
-let CH = 300;
+let CW = 144;
+let CH = 288;
 let CR = [
     { key: 'walk_1', src: '../resources/character/walk_nn.png' },
     { key: 'walk_2', src: '../resources/character/walk_ne.png' },
@@ -12,6 +13,13 @@ let CR = [
     { key: 'walk_6', src: '../resources/character/walk_sw.png' },
     { key: 'walk_7', src: '../resources/character/walk_ww.png' },
     { key: 'walk_8', src: '../resources/character/walk_nw.png' }
+];
+
+let SS = 5;
+let SW = 144;
+let SH = 288;
+let SR = [
+    { key: 'fireball_5', src: '../resources/spell/fireball_ss.png' }
 ];
 
 let TILE_SIZE = 36;
@@ -28,4 +36,4 @@ let OR = [
     { key: 'block_c', src: '../resources/obstacle/block_c.png' }
 ];
 
-export { TILE_SIZE, TILE_HALF, WF, CS, CW, CH, CR, MR, OR };
+export { TILE_SIZE, TILE_HALF, WF, SF, CS, CW, CH, CR, SS, SW, SH, SR, MR, OR };

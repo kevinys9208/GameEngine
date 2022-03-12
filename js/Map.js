@@ -7,9 +7,10 @@ export default class Map {
 
     static create
 
-    constructor(img, width, height) {
+    constructor(img, width, height, scene) {
         this.img = SrcManager.getGroup('map').get(img);
-        
+        this.scene = scene;
+
         this.width = width;
         this.height = height;
 
@@ -35,6 +36,24 @@ export default class Map {
 
     getOriginY() {
         return this.y - (GameManager.canvas.height / 2);
+    }
+
+    updateX() {
+        if (this.x <= GameManager.canvas.width / 2) {
+            this.x = GameManager.canvas.width / 2;
+
+        } else if (this.x >= this.img.width - (GameManager.canvas.width / 2)) {
+            this.x = this.img.width - (GameManager.canvas.width / 2);
+        }
+    }
+
+    updateY() {
+        if (this.y <= GameManager.canvas.height / 2) {
+            this.y = GameManager.canvas.height / 2;
+
+        } else if (this.y >= this.img.height - (GameManager.canvas.height / 2)) {
+            this.y = this.img.height - (GameManager.canvas.height / 2);
+        }
     }
 
     draw() {
