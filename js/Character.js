@@ -58,7 +58,7 @@ export default class Character {
     }
 
     attack() {
-        new Spell(this.x, this.y, this.dir, this.scene);
+        new Spell(this.dir, this.x, this.y, this.scene);
     }
 
     draw(map) {

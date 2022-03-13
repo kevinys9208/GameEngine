@@ -6,7 +6,9 @@ import Scene from './scene.js';
 
 export default class Spell {
 
-    constructor(x, y, dir, scene) {
+    offset = 24;
+
+    constructor(dir, x, y, scene) {
         this.id = ++GameManager.id;
 
         this.width = SW;
@@ -14,20 +16,62 @@ export default class Spell {
 
         this.rangeX = 1;
         this.rangeY = 1;
-
-        this.x = x;
-        this.y = y;
-
+        
         this.dir = dir;
+        this.#initPosition(x, y);
+
         this.img = SrcManager.getGroup('spell').get('fireball_' + this.dir);
 
         this.scene = scene;
-
         this.scene.objectMap.set(this.id, this);
         this.scene.spellMap.set(this.id, this);
 
         this.fIndex = 0;
         this.fIndexUpdator = setInterval(this.updateIndex, 24, this);
+    }
+
+    #initPosition(x, y) {
+        switch (this.dir) {
+            case Scene.NN:
+                this.x = x;
+                this.y = y - this.offset;
+                break
+
+            case Scene.NE:
+                this.x = x + this.offset;
+                this.y = y - this.offset / 2;
+                break;
+
+            case Scene.EE:
+                this.x = x + this.offset;
+                this.y = y;
+                break;
+
+            case Scene.SE:
+                this.x = x + this.offset;
+                this.y = y + this.offset / 2;
+                break;
+
+            case Scene.SS:
+                this.x = x;
+                this.y = y + this.offset;
+                break;
+
+            case Scene.SW:
+                this.x = x - this.offset;
+                this.y = y + this.offset / 2;
+                break;
+
+            case Scene.WW:
+                this.x = x - this.offset;
+                this.y = y;
+                break;
+
+            case Scene.NW:
+                this.x = x - this.offset;
+                this.y = y - this.offset / 2;
+                break;
+        }
     }
 
     updateIndex(s) {
