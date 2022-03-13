@@ -53,15 +53,16 @@ class GameManager {
         this.mainScene.createObstacle('wall_h', 0, 39, 40, 1);
         this.mainScene.createObstacle('wall_v', 39, 0, 1, 40);
 
-        for (let index = 0; index < 8; index++) {
-            this.mainScene.createObstacle(
-                                        'block_c', 
-                                        this.#getRandomInt(4, 35), 
-                                        this.#getRandomInt(4, 35), 
-                                        1, 
-                                        1
-                                    );
-        }
+        // obstacle
+        this.mainScene.createObstacle('block_c', 8, 7,  1, 1);
+        this.mainScene.createObstacle('block_c', 7, 31,  1, 1);
+        this.mainScene.createObstacle('block_c', 32, 8,  1, 1);
+        this.mainScene.createObstacle('block_c', 31, 32,  1, 1);
+
+        this.mainScene.createObstacle('block_c', 12, 20,  1, 1);
+        this.mainScene.createObstacle('block_c', 19, 12,  1, 1);
+        this.mainScene.createObstacle('block_c', 27, 19,  1, 1);
+        this.mainScene.createObstacle('block_c', 20, 27,  1, 1);
 
         this.controlReader = setInterval(this.readControl, 100, this);
 

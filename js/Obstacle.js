@@ -12,7 +12,6 @@ export default class Obstacle {
         } else {
             this.img = null;
         }
-       
 
         this.x = x;
         this.y = y;
