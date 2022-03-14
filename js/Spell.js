@@ -1,4 +1,4 @@
-import { SF, SS, SW, SH } from './resource.js';
+import { TILE_HALF, SF, SS, SW, SH } from './resource.js';
 
 import GameManager from './GameManager.js';
 import SrcManager from './SrcManager.js';
@@ -87,17 +87,6 @@ export default class Spell {
             this.#removeFromMap();
             return;
         }
-
-        this.#checkBoundOverX();
-    }
-
-    #checkBoundOverX() {
-        if (this.orthoX < -(this.width / 2)) {
-            this.#removeFromMap();
-
-        } else if (this.orthoX > this.scene.map.widht + (this.width / 2)) {
-            this.#removeFromMap();
-        }
     }
 
     updateY(dir, isDiagonal = 1) {
@@ -106,17 +95,6 @@ export default class Spell {
         if (isCollision) {
             this.#removeFromMap();
             return;
-        }
-
-        this.#checkBoundOverY();
-    }
-
-    #checkBoundOverY() {
-        if (this.orthoY < -(this.height / 2)) {
-            this.#removeFromMap();
-            
-        } else if (this.orthoY > this.scene.map.height + (this.height / 2)) {
-            this.#removeFromMap();
         }
     }
 

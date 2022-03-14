@@ -129,15 +129,23 @@ export default class Scene {
         if (orthoX < TILE_HALF) {
             orthoX = TILE_HALF;
 
+            isCollision = true;
+
         } else if (orthoX > this.map.width - TILE_HALF) {
-            orthoX = this.map.width - TILE_HALF
+            orthoX = this.map.width - TILE_HALF;
+
+            isCollision = true;
         }
 
         if (orthoY < TILE_HALF) {
             orthoY = TILE_HALF;
 
+            isCollision = true;
+
         } else if (orthoY > this.map.height - TILE_HALF) {
-            orthoY = this.map.height - TILE_HALF
+            orthoY = this.map.height - TILE_HALF;
+
+            isCollision = true;
         }
 
         t.orthoX = orthoX;
