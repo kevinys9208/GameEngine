@@ -70,6 +70,7 @@ export default class Scene {
         switch (t.dir) {
             case Scene.NN:
                 t.updateY(Scene.NN);
+                t.updateX(Scene.EE, 0);
                 break
 
             case Scene.NE:
@@ -78,6 +79,7 @@ export default class Scene {
                 break;
 
             case Scene.EE:
+                t.updateY(Scene.NN, 0);
                 t.updateX(Scene.EE);
                 break;
 
@@ -88,6 +90,7 @@ export default class Scene {
 
             case Scene.SS:
                 t.updateY(Scene.SS);
+                t.updateX(Scene.EE, 0);
                 break;
 
             case Scene.SW:
@@ -96,6 +99,7 @@ export default class Scene {
                 break;
 
             case Scene.WW:
+                t.updateY(Scene.NN, 0);
                 t.updateX(Scene.WW);
                 break;
 
@@ -284,7 +288,7 @@ export default class Scene {
         return ((x + y) / 2) + this.map.offsetY;
     }
 
-    #getAngle(x1, y1, x2, y2) {
+    getAngle(x1, y1, x2, y2) {
         let a;
         if(y1 == y2) {
             if(x2 < x1) {

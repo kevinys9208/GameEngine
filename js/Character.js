@@ -21,6 +21,7 @@ export default class Character {
         this.offsetX = 0;
         this.offsetY = 0;
 
+        this.viewDir = Scene.SS;
         this.dir = Scene.SS;
         this.isIdle = true;
 
@@ -36,7 +37,30 @@ export default class Character {
         }
     }
 
-    updateDir(dir) {
+    updateViewDir(x, y) {
+        var angle = this.scene.getAngle(this.x, this.y, x + this.scene.map.getOriginX(), y + this.scene.map.getOriginY());
+        this.angle = angle;
+    
+        if (angle > -22.5 && angle <= 22.5) {
+            this.viewDir = Scene.NN;
+        } else if (angle > 22.5 && angle <= 67.5) {
+            this.viewDir = Scene.NE;
+        } else if (angle > 67.5 && angle <= 112.5) {
+            this.viewDir = Scene.EE;
+        } else if (angle > 112.5 && angle <= 157.5) {
+            this.viewDir = Scene.SE;
+        } else if ((angle > 157.5 && angle <= 180) || (angle <= -157.5 && angle >= -180)) {
+            this.viewDir = Scene.SS;
+        } else if (angle <= -112.5 && angle > -157.5) {
+            this.viewDir = Scene.SW;
+        } else if (angle <= -67.5 && angle > -112.5) {
+            this.viewDir = Scene.WW;
+        } else if (angle <= -22.5 && angle > -67.5) {
+            this.viewDir = Scene.NW;
+        }
+    }
+
+    updateMoveDir(dir) {
         if (dir == Scene.IDLE) {
             this.isIdle = true;
             this.frameIndex = 1;
@@ -58,11 +82,11 @@ export default class Character {
     }
 
     attack() {
-        new Spell(this.dir, this.x, this.y, this.scene);
+        new Spell(this.viewDir, this.x, this.y, this.scene, this.angle);
     }
 
     draw(map) {
-        var img = SrcManager.getGroup('character').get('walk_' + this.dir);
+        var img = SrcManager.getGroup('character').get('walk_' + this.viewDir);
         var index = this.fIndex;
 
         if (this.isIdle) {

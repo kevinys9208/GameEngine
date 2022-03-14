@@ -1,7 +1,9 @@
+let TO_RADIAN = Math.PI / 180;
+
 let WF = 24;
 let SF = 59;
 
-let CS = 4;
+let CS = 5;
 let CW = 144;
 let CH = 288;
 let CR = [
@@ -15,7 +17,7 @@ let CR = [
     { key: 'walk_8', src: '../resources/character/walk_nw.png' }
 ];
 
-let SS = 6;
+let SS = 10;
 let SW = 288;
 let SH = 288;
 let SR = [
@@ -43,4 +45,4 @@ let OR = [
     { key: 'block_c', src: '../resources/obstacle/block_c.png' }
 ];
 
-export { TILE_SIZE, TILE_HALF, WF, SF, CS, CW, CH, CR, SS, SW, SH, SR, MR, OR };
+export { TO_RADIAN, TILE_SIZE, TILE_HALF, WF, SF, CS, CW, CH, CR, SS, SW, SH, SR, MR, OR };

@@ -31,6 +31,11 @@ class GameManager {
     }
 
     #initControl() {
+        this.#initKeyboardControl();
+        this.#initMouseControl();
+    }
+
+    #initKeyboardControl() {
         document.addEventListener('keydown', (e) => {
             if (e.repeat) {
                 return;
@@ -39,6 +44,25 @@ class GameManager {
         });
         document.addEventListener('keyup', (e) => {
             this.controlMap.set(e.code, false);
+        });
+    }
+
+    #initMouseControl() {
+        document.addEventListener('mousedown', (e) => {
+            if (e.button == 0) {
+                this.controlMap.set('onclick', true);
+            }
+        });
+        document.addEventListener('mouseup', (e) => {
+            if (e.button == 0) {
+                this.controlMap.set('onclick', false);
+            }
+        });
+        document.addEventListener('mousemove', (e) => {
+            this.readView(e.screenX, e.screenY);
+        });
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
         });
     }
 
@@ -53,16 +77,16 @@ class GameManager {
         // this.mainScene.createObstacle('wall_h', 0, 39, 40, 1);
         // this.mainScene.createObstacle('wall_v', 39, 0, 1, 40);
 
-        // // obstacle
-        // this.mainScene.createObstacle('block_c', 8, 7,  1, 1);
-        // this.mainScene.createObstacle('block_c', 7, 31,  1, 1);
-        // this.mainScene.createObstacle('block_c', 32, 8,  1, 1);
-        // this.mainScene.createObstacle('block_c', 31, 32,  1, 1);
+        // obstacle
+        this.mainScene.createObstacle('block_c', 8, 7,  1, 1);
+        this.mainScene.createObstacle('block_c', 7, 31,  1, 1);
+        this.mainScene.createObstacle('block_c', 32, 8,  1, 1);
+        this.mainScene.createObstacle('block_c', 31, 32,  1, 1);
 
-        // this.mainScene.createObstacle('block_c', 12, 20,  1, 1);
-        // this.mainScene.createObstacle('block_c', 19, 12,  1, 1);
-        // this.mainScene.createObstacle('block_c', 27, 19,  1, 1);
-        // this.mainScene.createObstacle('block_c', 20, 27,  1, 1);
+        this.mainScene.createObstacle('block_c', 12, 20,  1, 1);
+        this.mainScene.createObstacle('block_c', 19, 12,  1, 1);
+        this.mainScene.createObstacle('block_c', 27, 19,  1, 1);
+        this.mainScene.createObstacle('block_c', 20, 27,  1, 1);
 
         this.controlReader = setInterval(this.readControl, 100, this);
 
@@ -75,36 +99,40 @@ class GameManager {
     
 
     readControl(gm) {
-        gm.readDirection();
+        gm.readMovement();
         gm.readAttack();
     }
+    
+    readView(x, y) {
+        this.mainScene.character.updateViewDir(x, y);
+    }
 
-    readDirection() {
+    readMovement() {
         let dir = Scene.IDLE;
 
-        if (this.controlMap.get('ArrowUp') && this.controlMap.get('ArrowRight')) {
+        if (this.controlMap.get('KeyW') && this.controlMap.get('KeyD')) {
             dir = Scene.NE;
-        } else if (this.controlMap.get('ArrowUp') && this.controlMap.get('ArrowLeft')) {
+        } else if (this.controlMap.get('KeyW') && this.controlMap.get('KeyA')) {
             dir = Scene.NW;
-        } else if (this.controlMap.get('ArrowDown') && this.controlMap.get('ArrowRight')) {
+        } else if (this.controlMap.get('KeyS') && this.controlMap.get('KeyD')) {
             dir = Scene.SE;
-        } else if (this.controlMap.get('ArrowDown') && this.controlMap.get('ArrowLeft')) {
+        } else if (this.controlMap.get('KeyS') && this.controlMap.get('KeyA')) {
             dir = Scene.SW;
-        } else if (this.controlMap.get('ArrowUp')) {
+        } else if (this.controlMap.get('KeyW')) {
             dir = Scene.NN;
-        } else if (this.controlMap.get('ArrowDown')) {
+        } else if (this.controlMap.get('KeyS')) {
             dir = Scene.SS;
-        } else if (this.controlMap.get('ArrowRight')) {
+        } else if (this.controlMap.get('KeyD')) {
             dir = Scene.EE;
-        } else if (this.controlMap.get('ArrowLeft')) {
+        } else if (this.controlMap.get('KeyA')) {
             dir = Scene.WW;
         }
 
-        this.mainScene.character.updateDir(dir);
+        this.mainScene.character.updateMoveDir(dir);
     }
 
     readAttack() {
-        if (this.controlMap.get('KeyA')) {
+        if (this.controlMap.get('onclick')) {
             this.mainScene.character.attack();
         }
     }
