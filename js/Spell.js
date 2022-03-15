@@ -26,7 +26,8 @@ export default class Spell {
         this.x = x + this.diagonalX * this.offset;
         this.y = y + this.diagonalY * this.offset;
 
-        this.img = SrcManager.getGroup('spell').get('fireball_' + Scene.NN);
+        this.img = SrcManager.getGroup('spell').get('fireball');
+        this.shadow = SrcManager.getGroup('spell').get('fireball_shadow');
 
         this.scene = scene;
         this.scene.objectMap.set(this.id, this);
@@ -67,7 +68,7 @@ export default class Spell {
 
     draw(map) {
         var pointX = this.x - map.getOriginX();
-        var pointY = this.y - map.getOriginY() - 100;
+        var pointY = this.y - map.getOriginY()- 100;
 
         var ctx = GameManager.ctx;
         ctx.save();
@@ -77,6 +78,27 @@ export default class Spell {
 
         ctx.drawImage(
             this.img,
+            this.width * this.fIndex,
+            0,
+            this.width,
+            this.height,
+            pointX - (this.width / 2),
+            pointY - (this.height / 2),
+            this.width,
+            this.height
+        );
+
+        ctx.restore();
+
+        pointY += 100;
+
+        ctx.save();
+        ctx.translate(pointX, pointY);
+        ctx.rotate(this.radian);
+        ctx.translate(-pointX, -pointY);
+
+        ctx.drawImage(
+            this.shadow,
             this.width * this.fIndex,
             0,
             this.width,

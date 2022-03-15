@@ -12,6 +12,8 @@ export default class Character {
         this.name = name;
         this.scene = scene;
 
+        this.shadow = SrcManager.getGroup('character').get('walk_shadow');
+
         this.width = CW;
         this.height = CH;
 
@@ -93,18 +95,30 @@ export default class Character {
             index = 0;
         }
 
-        GameManager
-            .ctx
-            .drawImage(
-                img,
-                this.width * index,
-                0,
-                this.width,
-                this.height,
-                this.x - map.getOriginX() - (this.width / 2),
-                this.y - map.getOriginY() - (this.height / 2),
-                this.width,
-                this.height
-            );
+        var ctx = GameManager.ctx;
+
+        ctx.drawImage(
+            img,
+            this.width * index,
+            0,
+            this.width,
+            this.height,
+            this.x - map.getOriginX() - (this.width / 2),
+            this.y - map.getOriginY() - (this.height / 2),
+            this.width,
+            this.height
+        );
+
+        ctx.drawImage(
+            this.shadow,
+            0,
+            0,
+            this.width,
+            this.height,
+            this.x - map.getOriginX() - (this.width / 2),
+            this.y - map.getOriginY() - (this.height / 2),
+            this.width,
+            this.height
+        );
     }
 }
