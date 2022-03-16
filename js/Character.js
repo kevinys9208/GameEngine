@@ -73,14 +73,19 @@ export default class Character {
         this.isIdle = false;
     }
 
-    updateX(dir, isDiagonal = 1) {
-        this.x += (CS * isDiagonal * (dir == Scene.EE ? 1 : -1));
+    updateScreenCoord(dirY, weightY, dirX, weightX) {
+        this.#updateX(dirX, weightX);
+        this.#updateY(dirY, weightY);
+
         this.scene.updateOrthoCoord(this);
     }
 
-    updateY(dir, isDiagonal = 1) {
-        this.y += (CS * isDiagonal * (dir == Scene.SS ? 1 : -1));
-        this.scene.updateOrthoCoord(this);
+    #updateX(dir, weight = 1) {
+        this.x += (CS * weight * (dir == Scene.EE ? 1 : -1));
+    }
+
+    #updateY(dir, weight = 1) {
+        this.y += (CS * weight * (dir == Scene.SS ? 1 : -1));
     }
 
     attack() {

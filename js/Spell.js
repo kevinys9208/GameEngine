@@ -43,22 +43,39 @@ export default class Spell {
         }
     }
 
-    updateX() {
-        this.x += SS * this.diagonalX;
-        var isCollision = this.scene.updateOrthoCoord(this);
+    updateScreenCoord() {
+        this.#updateX();
+        this.#updateY();
+        
+        let isCollision = false;
+        isCollision = this.#checkEnemyCollision();
         if (isCollision) {
             this.#removeFromMap();
-            return;
+        }
+        isCollision = this.scene.updateOrthoCoord(this);
+        if (isCollision) {
+            this.#removeFromMap();
         }
     }
 
-    updateY() {
+    #updateX() {
+        this.x += SS * this.diagonalX;
+    }
+
+    #updateY() {
         this.y += SS * this.diagonalY;
-        var isCollision = this.scene.updateOrthoCoord(this);
-        if (isCollision) {
-            this.#removeFromMap();
-            return;
-        }
+    }
+
+    #checkEnemyCollision() {
+        let result = false;
+        Array.from(this.scene.enemyMap.values()).some((v) => {
+            result = v.isCollision(this);
+            if (result) {
+                v.addDamage();
+                return result;
+            }
+        });
+        return result;
     }
 
     #removeFromMap() {

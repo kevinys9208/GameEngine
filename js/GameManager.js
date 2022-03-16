@@ -1,4 +1,4 @@
-import { CR, SR, MR, OR } from './Resource.js'
+import { CR, SR, MR, ER } from './Resource.js'
 
 import SrcManager from './SrcManager.js'
 import Scene from './scene.js';
@@ -25,6 +25,7 @@ class GameManager {
 
     async #initResource() {
         await SrcManager.createGroup('character', CR);
+        await SrcManager.createGroup('enemy', ER);
         await SrcManager.createGroup('map', MR);
         // await SrcManager.createGroup('obstacle', OR);
         await SrcManager.createGroup('spell', SR);
@@ -91,12 +92,7 @@ class GameManager {
         this.controlReader = setInterval(this.readControl, 100, this);
 
         requestAnimationFrame(this.render);
-    }
-
-    #getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
-    
+    }    
 
     readControl(gm) {
         gm.readMovement();

@@ -1,6 +1,7 @@
 let TO_RADIAN = Math.PI / 180;
 
 let WF = 24;
+let EF = 23;
 let SF = 59;
 
 let CS = 5;
@@ -26,6 +27,21 @@ let SR = [
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 
+let ES = 2;
+let EW = 144;
+let EH = 288;
+let ER = [
+    { key: 'walk_1', src: '../resources/enemy/walk_nn.png' },
+    { key: 'walk_2', src: '../resources/enemy/walk_ne.png' },
+    { key: 'walk_3', src: '../resources/enemy/walk_ee.png' },
+    { key: 'walk_4', src: '../resources/enemy/walk_se.png' },
+    { key: 'walk_5', src: '../resources/enemy/walk_ss.png' },
+    { key: 'walk_6', src: '../resources/enemy/walk_sw.png' },
+    { key: 'walk_7', src: '../resources/enemy/walk_ww.png' },
+    { key: 'walk_8', src: '../resources/enemy/walk_nw.png' },
+    { key: 'walk_shadow', src: '../resources/enemy/walk_shadow.png' }
+];
+
 let TILE_SIZE = 36;
 let TILE_HALF = 18;
 
@@ -37,4 +53,4 @@ let OR = [
   
 ];
 
-export { TO_RADIAN, TILE_SIZE, TILE_HALF, WF, SF, CS, CW, CH, CR, SS, SW, SH, SR, MR, OR };
+export { TO_RADIAN, TILE_SIZE, TILE_HALF, WF, EF, SF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR };

@@ -3,6 +3,7 @@ import { TILE_SIZE, TILE_HALF } from './resource.js';
 import SceneMap from './Map.js'
 import Character from './character.js'
 import Obstacle from './Obstacle.js';
+import Skeleton from './Skeleton.js';
 
 export default class Scene {
 
@@ -16,17 +17,24 @@ export default class Scene {
     static WW = 7;
     static NW = 8;
 
-    constructor(name, map, widht, height) {
-        this.map = new SceneMap(map, widht, height, this);
+    constructor(name, map, width, height) {
+        this.map = new SceneMap(map, width, height, this);
         this.character = new Character(name, this);
 
         this.objectMap = new Map();
         this.objectMap.set(this.character.id, this.character);
 
         this.spellMap = new Map();
+        this.enemyMap = new Map();
 
         this.setCoord();
         this.coordUpdator = setInterval(this.updateCoord, 16, this);
+
+        setTimeout((scene) => {
+            scene.enemyCreator = setInterval(scene.createEnemy, 250, scene);
+        }, 1000, this);
+
+        // new Skeleton(this);
     }
 
     setCoord() {
@@ -43,6 +51,7 @@ export default class Scene {
     updateCoord(s) {
         s.updateCharacterCoord();
         s.updateMapCoord();
+        s.updateEnemyCoord();
         s.updateSpellCoord();
     }
 
@@ -62,6 +71,10 @@ export default class Scene {
         this.map.updateY();
     }
 
+    updateEnemyCoord() {
+        this.enemyMap.forEach(e => this.#updateCoordByDir(e));
+    }
+
     updateSpellCoord() {
         this.spellMap.forEach(s => this.#updateCoordByDir(s));
     }
@@ -69,43 +82,51 @@ export default class Scene {
     #updateCoordByDir(t) {
         switch (t.dir) {
             case Scene.NN:
-                t.updateY(Scene.NN);
-                t.updateX(Scene.EE, 0);
+                t.updateScreenCoord(Scene.NN, 1, Scene.EE, 0);
+                // t.updateY(Scene.NN);
+                // t.updateX(Scene.EE, 0);
                 break
 
             case Scene.NE:
-                t.updateY(Scene.NN, 0.45);
-                t.updateX(Scene.EE, 0.9);
+                t.updateScreenCoord(Scene.NN, 0.45, Scene.EE, 0.9);
+                // t.updateY(Scene.NN, 0.45);
+                // t.updateX(Scene.EE, 0.9);
                 break;
 
             case Scene.EE:
-                t.updateY(Scene.NN, 0);
-                t.updateX(Scene.EE);
+                t.updateScreenCoord(Scene.NN, 0, Scene.EE, 1);
+                // t.updateY(Scene.NN, 0);
+                // t.updateX(Scene.EE);
                 break;
 
             case Scene.SE:
-                t.updateY(Scene.SS, 0.45);
-                t.updateX(Scene.EE, 0.9);
+                t.updateScreenCoord(Scene.SS, 0.45, Scene.EE, 0.9);
+                // t.updateY(Scene.SS, 0.45);
+                // t.updateX(Scene.EE, 0.9);
                 break;
 
             case Scene.SS:
-                t.updateY(Scene.SS);
-                t.updateX(Scene.EE, 0);
+                t.updateScreenCoord(Scene.SS, 1, Scene.EE, 0);
+                // t.updateY(Scene.SS);
+                // t.updateX(Scene.EE, 0);
                 break;
 
             case Scene.SW:
-                t.updateY(Scene.SS, 0.45);
-                t.updateX(Scene.WW, 0.9);
+                t.updateScreenCoord(Scene.SS, 0.45, Scene.WW, 0.9);
+                // t.updateY(Scene.SS, 0.45);
+                // t.updateX(Scene.WW, 0.9);
                 break;
 
             case Scene.WW:
-                t.updateY(Scene.NN, 0);
-                t.updateX(Scene.WW);
+                t.updateScreenCoord(Scene.NN, 0, Scene.WW, 1);
+                // t.updateY(Scene.NN, 0);
+                // t.updateX(Scene.WW);
                 break;
 
             case Scene.NW:
-                t.updateY(Scene.NN, 0.45);
-                t.updateX(Scene.WW, 0.9);
+                t.updateScreenCoord(Scene.NN, 0.45, Scene.WW, 0.9);
+                // t.updateY(Scene.NN, 0.45);
+                // t.updateX(Scene.WW, 0.9);
                 break;
         }
     }
@@ -316,6 +337,10 @@ export default class Scene {
         return a;
     }
 
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
     createObstacle(img, coordX, coordY, rangeX, rangeY) {
         var x = (coordX * TILE_SIZE + (coordX + rangeX) * TILE_SIZE) / 2;
         var y = (coordY * TILE_SIZE + (coordY + rangeY) * TILE_SIZE) / 2;
@@ -332,6 +357,10 @@ export default class Scene {
 
         this.objectMap.set(obstacle.id, obstacle);
         this.map.setObstacle(obstacle);
+    }
+
+    createEnemy(scene) {
+        new Skeleton(scene);
     }
 
     draw() {
