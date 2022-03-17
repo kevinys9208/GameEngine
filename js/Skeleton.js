@@ -1,4 +1,4 @@
-import { TILE_SIZE, TILE_HALF, EF, ES, EW, EH } from './Resource.js';
+import { TILE_SIZE, EF, ES, EW, EH } from './Resource.js';
 
 import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
@@ -6,19 +6,26 @@ import Scene from "./scene.js";
 
 export default class Skeleton {
 
+    maxLife = 5;
+
     constructor(scene) {
         this.id = ++GameManager.id;
         this.scene = scene;
 
+        this.lifeBar = SrcManager.getGroup('ui').get('life');
+        this.lifeBack = SrcManager.getGroup('ui').get('life_back');
         this.shadow = SrcManager.getGroup('enemy').get('walk_shadow');
 
         this.width = EW;
         this.height = EH;
 
+        this.rangeX = 1;
+        this.rangeY = 1;
+
         this.dir = Scene.SS;
         this.#initPosition();
 
-        this.life = 1;
+        this.life = this.maxLife;
 
         this.reactRate = this.scene.getRandomInt(21, 210);
 
@@ -30,24 +37,8 @@ export default class Skeleton {
     }
 
     #initPosition() {
-        let position = this.scene.getRandomInt(0, 4);
-
-        if (position == 0) {
-            this.x = this.scene.map.offsetX;
-            this.y = this.scene.map.offsetY;
-
-        } else if (position == 1) {
-            this.x = this.scene.map.width + this.scene.map.offsetX;
-            this.y = (this.scene.map.width) / 2 + this.scene.map.offsetY;
-
-        } else if (position == 2) {
-            this.x = this.scene.map.offsetX - this.scene.map.height;
-            this.y = (this.scene.map.height) / 2 + this.scene.map.offsetY;
-
-        } else if (position == 3) {
-            this.x = this.scene.map.offsetX - this.scene.map.height + this.scene.map.width;
-            this.y = (this.scene.map.height + this.scene.map.width) / 2 + this.scene.map.offsetY;
-        }
+        this.x = this.scene.map.offsetX + this.scene.getRandomInt(200, 1200) - this.scene.getRandomInt(200, 1200);
+        this.y = this.scene.map.offsetY + (this.scene.getRandomInt(200, 1200) + this.scene.getRandomInt(200, 1200)) / 2;
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
@@ -116,33 +107,69 @@ export default class Skeleton {
         return false;
     }
 
-    draw(map) {
+    draw() {
         var img = SrcManager.getGroup('enemy').get('walk_' + this.dir);
-
         var ctx = GameManager.ctx;
 
-        ctx.drawImage(
-            img, 
-            this.width * this.fIndex, 
-            0, 
-            this.width, 
-            this.height, 
-            this.x - map.getOriginX() - (this.width / 2),
-            this.y - map.getOriginY() - (this.height / 2),
-            this.width,
-            this.height
-        );
+        this.#drawShadow(ctx);
+        this.#drawImage(ctx, img);
+        this.#drawLifeBack(ctx);
+        this.#drawLifeBar(ctx);  
+    }
 
+    #drawShadow(ctx) {
         ctx.drawImage(
             this.shadow,
             0,
             0,
             this.width,
             this.height,
-            this.x - map.getOriginX() - (this.width / 2),
-            this.y - map.getOriginY() - (this.height / 2),
+            this.x - this.scene.map.getOriginX() - (this.width / 2),
+            this.y - this.scene.map.getOriginY() - (this.height / 2),
             this.width,
             this.height
+        );
+    }
+
+    #drawImage(ctx, img) {
+        ctx.drawImage(
+            img, 
+            this.width * this.fIndex, 
+            0, 
+            this.width, 
+            this.height, 
+            this.x - this.scene.map.getOriginX() - (this.width / 2),
+            this.y - this.scene.map.getOriginY() - (this.height / 2),
+            this.width,
+            this.height
+        );
+    }
+
+    #drawLifeBack(ctx) {
+        ctx.drawImage(
+            this.lifeBack, 
+            0,
+            0, 
+            this.lifeBack.width, 
+            this.lifeBack.height, 
+            this.x - this.scene.map.getOriginX() - (this.lifeBack.width / 2),
+            this.y - this.scene.map.getOriginY() - (this.lifeBack.height / 2) - 30,
+            this.lifeBack.width, 
+            this.lifeBack.height, 
+        );
+    }
+
+    #drawLifeBar(ctx) {
+        ctx.drawImage(
+            this.lifeBar, 
+            0,
+            0, 
+            this.lifeBar.width, 
+            this.lifeBar.height, 
+            this.x - this.scene.map.getOriginX() - (this.lifeBar.width / 2),
+            this.y - this.scene.map.getOriginY() - (this.lifeBar.height / 2) - 30,
+            this.lifeBar.width * (this.life / this.maxLife), 
+            this.lifeBar.height, 
         );
     }
 

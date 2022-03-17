@@ -19,7 +19,7 @@ let CR = [
     { key: 'walk_shadow', src: '../resources/character/walk_shadow.png' }
 ];
 
-let SS = 10;
+let SS = 9;
 let SW = 288;
 let SH = 288;
 let SR = [
@@ -27,7 +27,7 @@ let SR = [
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 
-let ES = 2;
+let ES = 3;
 let EW = 144;
 let EH = 288;
 let ER = [
@@ -53,4 +53,9 @@ let OR = [
   
 ];
 
-export { TO_RADIAN, TILE_SIZE, TILE_HALF, WF, EF, SF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR };
+let UR = [
+    { key: 'life', src: '../resources/ui/life.png' },
+    { key: 'life_back', src: '../resources/ui/life_back.png' }
+];
+
+export { TO_RADIAN, TILE_SIZE, TILE_HALF, WF, EF, SF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR };

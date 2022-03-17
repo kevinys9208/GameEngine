@@ -29,12 +29,6 @@ export default class Scene {
 
         this.setCoord();
         this.coordUpdator = setInterval(this.updateCoord, 16, this);
-
-        setTimeout((scene) => {
-            scene.enemyCreator = setInterval(scene.createEnemy, 250, scene);
-        }, 1000, this);
-
-        // new Skeleton(this);
     }
 
     setCoord() {
@@ -83,50 +77,34 @@ export default class Scene {
         switch (t.dir) {
             case Scene.NN:
                 t.updateScreenCoord(Scene.NN, 1, Scene.EE, 0);
-                // t.updateY(Scene.NN);
-                // t.updateX(Scene.EE, 0);
                 break
 
             case Scene.NE:
                 t.updateScreenCoord(Scene.NN, 0.45, Scene.EE, 0.9);
-                // t.updateY(Scene.NN, 0.45);
-                // t.updateX(Scene.EE, 0.9);
                 break;
 
             case Scene.EE:
                 t.updateScreenCoord(Scene.NN, 0, Scene.EE, 1);
-                // t.updateY(Scene.NN, 0);
-                // t.updateX(Scene.EE);
                 break;
 
             case Scene.SE:
                 t.updateScreenCoord(Scene.SS, 0.45, Scene.EE, 0.9);
-                // t.updateY(Scene.SS, 0.45);
-                // t.updateX(Scene.EE, 0.9);
                 break;
 
             case Scene.SS:
                 t.updateScreenCoord(Scene.SS, 1, Scene.EE, 0);
-                // t.updateY(Scene.SS);
-                // t.updateX(Scene.EE, 0);
                 break;
 
             case Scene.SW:
                 t.updateScreenCoord(Scene.SS, 0.45, Scene.WW, 0.9);
-                // t.updateY(Scene.SS, 0.45);
-                // t.updateX(Scene.WW, 0.9);
                 break;
 
             case Scene.WW:
                 t.updateScreenCoord(Scene.NN, 0, Scene.WW, 1);
-                // t.updateY(Scene.NN, 0);
-                // t.updateX(Scene.WW);
                 break;
 
             case Scene.NW:
                 t.updateScreenCoord(Scene.NN, 0.45, Scene.WW, 0.9);
-                // t.updateY(Scene.NN, 0.45);
-                // t.updateX(Scene.WW, 0.9);
                 break;
         }
     }
@@ -182,112 +160,117 @@ export default class Scene {
     }
 
     #checkCollision(dir, t, orthoX, orthoY) {
-        let isCollision = false;
+        try {
+            let isCollision = false;
 
-        switch (dir) {
-            case Scene.NE:
-                var ne = new Object();
-                ne.x = parseInt((orthoX + TILE_HALF) / TILE_SIZE);
-                if (ne.x > (this.map.width / TILE_SIZE) - 1) {
-                    break;
-                }
-                
-                ne.y = parseInt((orthoY - TILE_HALF) / TILE_SIZE);
-                if (ne.y < 0) {
-                    break;
-                }
-
-                if (this.map.resource[ne.y][ne.x] != 0) {
-                    var obstacle = this.objectMap.get(this.map.resource[ne.y][ne.x]);
-
-                    if ((obstacle.coordY + obstacle.rangeY) * TILE_SIZE <= t.orthoY - TILE_HALF) {
-                        orthoY = (obstacle.coordY + obstacle.rangeY) * TILE_SIZE + TILE_HALF;
-
-                    } else {
-                        orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
+            switch (dir) {
+                case Scene.NE:
+                    var ne = new Object();
+                    ne.x = parseInt((orthoX + TILE_HALF) / TILE_SIZE);
+                    if (ne.x > (this.map.width / TILE_SIZE) - 1) {
+                        break;
+                    }
+                    
+                    ne.y = parseInt((orthoY - TILE_HALF) / TILE_SIZE);
+                    if (ne.y < 0) {
+                        break;
                     }
 
-                    isCollision = true;
-                }
-                break;
+                    if (this.map.resource[ne.y][ne.x] != 0) {
+                        var obstacle = this.objectMap.get(this.map.resource[ne.y][ne.x]);
 
-            case Scene.SE:
-                var se = new Object();
-                se.x = parseInt((orthoX + TILE_HALF) / TILE_SIZE);
-                if (se.x > (this.map.width / TILE_SIZE) - 1) {
+                        if ((obstacle.coordY + obstacle.rangeY) * TILE_SIZE <= t.orthoY - TILE_HALF) {
+                            orthoY = (obstacle.coordY + obstacle.rangeY) * TILE_SIZE + TILE_HALF;
+
+                        } else {
+                            orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
+                        }
+
+                        isCollision = true;
+                    }
                     break;
-                }
 
-                se.y = parseInt((orthoY + TILE_HALF) / TILE_SIZE);
-                if (se.y > (this.map.height / TILE_SIZE) - 1) {
-                    break;
-                }
-        
-                if (this.map.resource[se.y][se.x] != 0) {
-                    var obstacle = this.objectMap.get(this.map.resource[se.y][se.x]);
-
-                    if (obstacle.coordX * TILE_SIZE >= t.orthoX + TILE_HALF) {
-                        orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
-
-                    } else {
-                        orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
+                case Scene.SE:
+                    var se = new Object();
+                    se.x = parseInt((orthoX + TILE_HALF) / TILE_SIZE);
+                    if (se.x > (this.map.width / TILE_SIZE) - 1) {
+                        break;
                     }
 
-                    isCollision = true;
-                }
-                break;
+                    se.y = parseInt((orthoY + TILE_HALF) / TILE_SIZE);
+                    if (se.y > (this.map.height / TILE_SIZE) - 1) {
+                        break;
+                    }
+            
+                    if (this.map.resource[se.y][se.x] != 0) {
+                        var obstacle = this.objectMap.get(this.map.resource[se.y][se.x]);
 
-            case Scene.SW:
-                var sw = new Object();
-                sw.x = parseInt((orthoX - TILE_HALF) / TILE_SIZE);
-                if (sw.x < 0) {
+                        if (obstacle.coordX * TILE_SIZE >= t.orthoX + TILE_HALF) {
+                            orthoX = obstacle.coordX * TILE_SIZE - TILE_HALF;
+
+                        } else {
+                            orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
+                        }
+
+                        isCollision = true;
+                    }
                     break;
-                }
 
-                sw.y = parseInt((orthoY + TILE_HALF) / TILE_SIZE);
-                if (sw.y > (this.map.height / TILE_SIZE) - 1) {
-                    break;
-                }
-        
-                if (this.map.resource[sw.y][sw.x] != 0) {
-                    var obstacle = this.objectMap.get(this.map.resource[sw.y][sw.x]);
-
-                    if (obstacle.coordY * TILE_SIZE >= t.orthoY + TILE_HALF) {
-                        orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
-
-                    } else {
-                        orthoX = (obstacle.coordX + obstacle.rangeX)  * TILE_SIZE + TILE_HALF;
+                case Scene.SW:
+                    var sw = new Object();
+                    sw.x = parseInt((orthoX - TILE_HALF) / TILE_SIZE);
+                    if (sw.x < 0) {
+                        break;
                     }
 
-                    isCollision = true;
-                }
-                break;
+                    sw.y = parseInt((orthoY + TILE_HALF) / TILE_SIZE);
+                    if (sw.y > (this.map.height / TILE_SIZE) - 1) {
+                        break;
+                    }
+            
+                    if (this.map.resource[sw.y][sw.x] != 0) {
+                        var obstacle = this.objectMap.get(this.map.resource[sw.y][sw.x]);
 
-            case Scene.NW:
-                var nw = new Object();
-                nw.x = parseInt((orthoX - TILE_HALF) / TILE_SIZE);
-                if (nw.x < 0) {
+                        if (obstacle.coordY * TILE_SIZE >= t.orthoY + TILE_HALF) {
+                            orthoY = obstacle.coordY * TILE_SIZE - TILE_HALF;
+
+                        } else {
+                            orthoX = (obstacle.coordX + obstacle.rangeX)  * TILE_SIZE + TILE_HALF;
+                        }
+
+                        isCollision = true;
+                    }
                     break;
-                }
 
-                nw.y = parseInt((orthoY - TILE_HALF) / TILE_SIZE);
-                if (nw.y < 0) {
-                    break;
-                }
-        
-                if (this.map.resource[nw.y][nw.x] != 0) {
-                    var obstacle = this.objectMap.get(this.map.resource[nw.y][nw.x]);
-
-                    if ((obstacle.coordX + obstacle.rangeX) * TILE_SIZE <= t.orthoX - TILE_HALF) {
-                        orthoX = (obstacle.coordX + obstacle.rangeX) * TILE_SIZE + TILE_HALF;
-
-                    } else {
-                        orthoY = (obstacle.coordY + obstacle.rangeY)  * TILE_SIZE + TILE_HALF;
+                case Scene.NW:
+                    var nw = new Object();
+                    nw.x = parseInt((orthoX - TILE_HALF) / TILE_SIZE);
+                    if (nw.x < 0) {
+                        break;
                     }
 
-                    isCollision = true;
-                }
-                break;
+                    nw.y = parseInt((orthoY - TILE_HALF) / TILE_SIZE);
+                    if (nw.y < 0) {
+                        break;
+                    }
+            
+                    if (this.map.resource[nw.y][nw.x] != 0) {
+                        var obstacle = this.objectMap.get(this.map.resource[nw.y][nw.x]);
+
+                        if ((obstacle.coordX + obstacle.rangeX) * TILE_SIZE <= t.orthoX - TILE_HALF) {
+                            orthoX = (obstacle.coordX + obstacle.rangeX) * TILE_SIZE + TILE_HALF;
+
+                        } else {
+                            orthoY = (obstacle.coordY + obstacle.rangeY)  * TILE_SIZE + TILE_HALF;
+                        }
+
+                        isCollision = true;
+                    }
+                    break;
+            }
+
+        } catch (error) {
+            console.log('Error is occured on checkCollision [ ' + error + ' ]');
         }
 
         return { x: orthoX, y: orthoY, isCollision: isCollision };
@@ -359,8 +342,10 @@ export default class Scene {
         this.map.setObstacle(obstacle);
     }
 
-    createEnemy(scene) {
-        new Skeleton(scene);
+    createEnemy(amount) {
+        for (let index = 0; index < amount; index++) {
+            new Skeleton(this);
+        }
     }
 
     draw() {

@@ -1,4 +1,4 @@
-import { CR, SR, MR, ER } from './Resource.js'
+import { CR, SR, MR, ER, UR } from './Resource.js'
 
 import SrcManager from './SrcManager.js'
 import Scene from './scene.js';
@@ -21,6 +21,7 @@ class GameManager {
     async init() {
         await this.#initResource();
         this.#initControl();
+        this.#initUiControl();
     }
 
     async #initResource() {
@@ -29,6 +30,7 @@ class GameManager {
         await SrcManager.createGroup('map', MR);
         // await SrcManager.createGroup('obstacle', OR);
         await SrcManager.createGroup('spell', SR);
+        await SrcManager.createGroup('ui', UR);
     }
 
     #initControl() {
@@ -49,21 +51,29 @@ class GameManager {
     }
 
     #initMouseControl() {
-        document.addEventListener('mousedown', (e) => {
+        this.canvas.addEventListener('mousedown', (e) => {
             if (e.button == 0) {
                 this.controlMap.set('onclick', true);
             }
         });
-        document.addEventListener('mouseup', (e) => {
+        this.canvas.addEventListener('mouseup', (e) => {
             if (e.button == 0) {
                 this.controlMap.set('onclick', false);
             }
         });
-        document.addEventListener('mousemove', (e) => {
+        this.canvas.addEventListener('mousemove', (e) => {
             this.readView(e.screenX, e.screenY);
         });
-        document.addEventListener('contextmenu', (e) => {
+        this.canvas.addEventListener('contextmenu', (e) => {
             e.preventDefault();
+        });
+    }
+
+    #initUiControl() {
+        var enemyBtn = document.getElementById('enemyBtn');
+        enemyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.mainScene.createEnemy(25);
         });
     }
 
