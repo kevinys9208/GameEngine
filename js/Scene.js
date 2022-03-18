@@ -160,9 +160,9 @@ export default class Scene {
     }
 
     #checkCollision(dir, t, orthoX, orthoY) {
-        try {
-            let isCollision = false;
+        let isCollision = false;
 
+        try {
             switch (dir) {
                 case Scene.NE:
                     var ne = new Object();
