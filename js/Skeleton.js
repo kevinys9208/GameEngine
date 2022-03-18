@@ -109,65 +109,69 @@ export default class Skeleton {
 
     draw() {
         var img = SrcManager.getGroup('enemy').get('walk_' + this.dir);
+
         var ctx = GameManager.ctx;
 
-        this.#drawShadow(ctx);
-        this.#drawImage(ctx, img);
-        this.#drawLifeBack(ctx);
-        this.#drawLifeBar(ctx);  
+        var pointX = this.x - this.scene.map.getOriginX();
+        var pointY = this.y - this.scene.map.getOriginY();
+
+        this.#drawShadow(ctx, pointX, pointY);
+        this.#drawImage(ctx, img, pointX, pointY);
+        this.#drawLifeBack(ctx, pointX, pointY);
+        this.#drawLifeBar(ctx, pointX, pointY);  
     }
 
-    #drawShadow(ctx) {
+    #drawShadow(ctx, pointX, pointY) {
         ctx.drawImage(
             this.shadow,
             0,
             0,
             this.width,
             this.height,
-            this.x - this.scene.map.getOriginX() - (this.width / 2),
-            this.y - this.scene.map.getOriginY() - (this.height / 2),
+            pointX - (this.width / 2),
+            pointY - (this.height / 2),
             this.width,
             this.height
         );
     }
 
-    #drawImage(ctx, img) {
+    #drawImage(ctx, img, pointX, pointY) {
         ctx.drawImage(
             img, 
             this.width * this.fIndex, 
             0, 
             this.width, 
             this.height, 
-            this.x - this.scene.map.getOriginX() - (this.width / 2),
-            this.y - this.scene.map.getOriginY() - (this.height / 2),
+            pointX - (this.width / 2),
+            pointY - (this.height / 2),
             this.width,
             this.height
         );
     }
 
-    #drawLifeBack(ctx) {
+    #drawLifeBack(ctx, pointX, pointY) {
         ctx.drawImage(
             this.lifeBack, 
             0,
             0, 
             this.lifeBack.width, 
             this.lifeBack.height, 
-            this.x - this.scene.map.getOriginX() - (this.lifeBack.width / 2),
-            this.y - this.scene.map.getOriginY() - (this.lifeBack.height / 2) - 30,
+            pointX - (this.lifeBack.width / 2),
+            pointY - (this.lifeBack.height / 2),
             this.lifeBack.width, 
             this.lifeBack.height, 
         );
     }
 
-    #drawLifeBar(ctx) {
+    #drawLifeBar(ctx, pointX, pointY) {
         ctx.drawImage(
             this.lifeBar, 
             0,
             0, 
             this.lifeBar.width, 
             this.lifeBar.height, 
-            this.x - this.scene.map.getOriginX() - (this.lifeBar.width / 2),
-            this.y - this.scene.map.getOriginY() - (this.lifeBar.height / 2) - 30,
+            pointX - (this.lifeBar.width / 2),
+            pointY - (this.lifeBar.height / 2),
             this.lifeBar.width * (this.life / this.maxLife), 
             this.lifeBar.height, 
         );

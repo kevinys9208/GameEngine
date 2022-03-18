@@ -102,26 +102,36 @@ export default class Character {
 
         var ctx = GameManager.ctx;
 
-        ctx.drawImage(
-            img,
-            this.width * index,
-            0,
-            this.width,
-            this.height,
-            this.x - map.getOriginX() - (this.width / 2),
-            this.y - map.getOriginY() - (this.height / 2),
-            this.width,
-            this.height
-        );
+        var pointX = this.x - map.getOriginX() - (this.width / 2);
+        var pointY = this.y - map.getOriginY() - (this.height / 2);
 
+        this.#drawShadow(ctx, pointX, pointY);
+        this.#drawImage(ctx, img, index, pointX, pointY);
+    }
+
+    #drawShadow(ctx, pointX, pointY) {
         ctx.drawImage(
             this.shadow,
             0,
             0,
             this.width,
             this.height,
-            this.x - map.getOriginX() - (this.width / 2),
-            this.y - map.getOriginY() - (this.height / 2),
+            pointX,
+            pointY,
+            this.width,
+            this.height
+        );
+    }
+
+    #drawImage(ctx, img, index, pointX, pointY) {
+        ctx.drawImage(
+            img,
+            this.width * index,
+            0,
+            this.width,
+            this.height,
+            pointX,
+            pointY,
             this.width,
             this.height
         );

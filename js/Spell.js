@@ -84,17 +84,26 @@ export default class Spell {
     }
 
     draw(map) {
-        var pointX = this.x - map.getOriginX();
-        var pointY = this.y - map.getOriginY()- 100;
-
         var ctx = GameManager.ctx;
+
+        var pointX = this.x - map.getOriginX();
+        var pointY = this.y - map.getOriginY();
+
+        this.#drawShadow(ctx, pointX, pointY);
+
+        pointY -= 100;
+
+        this.#drawImage(ctx, pointX, pointY);
+    }
+
+    #drawShadow(ctx, pointX, pointY) {
         ctx.save();
         ctx.translate(pointX, pointY);
         ctx.rotate(this.radian);
         ctx.translate(-pointX, -pointY);
 
         ctx.drawImage(
-            this.img,
+            this.shadow,
             this.width * this.fIndex,
             0,
             this.width,
@@ -106,16 +115,16 @@ export default class Spell {
         );
 
         ctx.restore();
+    }
 
-        pointY += 100;
-
+    #drawImage(ctx, pointX, pointY) {
         ctx.save();
         ctx.translate(pointX, pointY);
         ctx.rotate(this.radian);
         ctx.translate(-pointX, -pointY);
 
         ctx.drawImage(
-            this.shadow,
+            this.img,
             this.width * this.fIndex,
             0,
             this.width,
