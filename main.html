@@ -16,14 +16,14 @@
         async function start() {
             await GameManager.init();
             console.log('GameManager init Complete.');
-            GameManager.start();
         }
     </script>
 </head>
 <body>
     <canvas id="mainCanvas"></canvas>
     <div class="uiBox">
-        <button id="enemyBtn">해골소환</button>
+        <button class="uiButton" id="startBtn">시작</button>
+        <button class="uiButton" id="enemyBtn">해골소환</button>
     </div>
 </body>
 </html>

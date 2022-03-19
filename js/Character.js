@@ -7,11 +7,15 @@ import Spell from './Spell.js';
 
 export default class Character {
 
+    maxLife = 100
+
     constructor(name, scene) {
         this.id = ++GameManager.id;
         this.name = name;
         this.scene = scene;
 
+        this.lifeBar = SrcManager.getGroup('ui').get('life');
+        this.lifeBack = SrcManager.getGroup('ui').get('life_back');
         this.shadow = SrcManager.getGroup('character').get('walk_shadow');
 
         this.width = CW;
@@ -26,6 +30,8 @@ export default class Character {
         this.viewDir = Scene.SS;
         this.dir = Scene.SS;
         this.isIdle = true;
+
+        this.life = this.maxLife;
 
         this.fIndex = 0;
         this.fIndexUpdator = setInterval(this.updateIndex, 24, this);
@@ -74,10 +80,23 @@ export default class Character {
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
+        if (this.isIdle) {
+            var isCollision = this.#checkEnemyCollision();
+            if (isCollision) {
+                this.#addDamage();
+            }
+            return;
+        }
+    
         this.#updateX(dirX, weightX);
         this.#updateY(dirY, weightY);
 
         this.scene.updateOrthoCoord(this);
+
+        var isCollision = this.#checkEnemyCollision();
+        if (isCollision) {
+            this.#addDamage();
+        }
     }
 
     #updateX(dir, weight = 1) {
@@ -88,8 +107,31 @@ export default class Character {
         this.y += (CS * weight * (dir == Scene.SS ? 1 : -1));
     }
 
+    #checkEnemyCollision() {
+        let result = false;
+        Array.from(this.scene.enemyMap.values()).some((v) => {
+            result = v.isCollision(this);
+            if (result) {
+                return result;
+            }
+        });
+        return result;
+    }
+
     attack() {
         new Spell(this.viewDir, this.x, this.y, this.scene, this.angle);
+    }
+
+    #addDamage() {
+        this.life -= 1;
+
+        if (this.life <= 0) {
+           GameManager.stop();
+        }
+    }
+
+    stop() {
+        clearInterval(this.fIndexUpdator);
     }
 
     draw(map) {
@@ -102,11 +144,13 @@ export default class Character {
 
         var ctx = GameManager.ctx;
 
-        var pointX = this.x - map.getOriginX() - (this.width / 2);
-        var pointY = this.y - map.getOriginY() - (this.height / 2);
+        var pointX = this.x - map.getOriginX();
+        var pointY = this.y - map.getOriginY();
 
         this.#drawShadow(ctx, pointX, pointY);
         this.#drawImage(ctx, img, index, pointX, pointY);
+        this.#drawLifeBack(ctx, pointX,pointY)
+        this.#drawLifeBar(ctx, pointX, pointY);
     }
 
     #drawShadow(ctx, pointX, pointY) {
@@ -116,8 +160,8 @@ export default class Character {
             0,
             this.width,
             this.height,
-            pointX,
-            pointY,
+            pointX - (this.width / 2),
+            pointY - (this.height / 2),
             this.width,
             this.height
         );
@@ -130,10 +174,38 @@ export default class Character {
             0,
             this.width,
             this.height,
-            pointX,
-            pointY,
+            pointX - (this.width / 2),
+            pointY - (this.height / 2),
             this.width,
             this.height
+        );
+    }
+
+    #drawLifeBack(ctx, pointX, pointY) {
+        ctx.drawImage(
+            this.lifeBack, 
+            0,
+            0, 
+            this.lifeBack.width, 
+            this.lifeBack.height, 
+            pointX - (this.lifeBack.width / 2),
+            pointY + 20,
+            this.lifeBack.width, 
+            this.lifeBack.height, 
+        );
+    }
+
+    #drawLifeBar(ctx, pointX, pointY) {
+        ctx.drawImage(
+            this.lifeBar, 
+            0,
+            0, 
+            this.lifeBar.width, 
+            this.lifeBar.height, 
+            pointX - (this.lifeBar.width / 2),
+            pointY + 20,
+            this.lifeBar.width * (this.life / this.maxLife), 
+            this.lifeBar.height, 
         );
     }
 }

@@ -157,7 +157,7 @@ export default class Skeleton {
             this.lifeBack.width, 
             this.lifeBack.height, 
             pointX - (this.lifeBack.width / 2),
-            pointY - (this.lifeBack.height / 2),
+            pointY + 20,
             this.lifeBack.width, 
             this.lifeBack.height, 
         );
@@ -171,7 +171,7 @@ export default class Skeleton {
             this.lifeBar.width, 
             this.lifeBar.height, 
             pointX - (this.lifeBar.width / 2),
-            pointY - (this.lifeBar.height / 2),
+            pointY + 20,
             this.lifeBar.width * (this.life / this.maxLife), 
             this.lifeBar.height, 
         );

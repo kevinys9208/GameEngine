@@ -16,6 +16,8 @@ class GameManager {
 
         this.ctx = this.canvas.getContext('2d');
         this.controlMap = new Map();
+
+        this.isStart = false;
     }
 
     async init() {
@@ -75,9 +77,19 @@ class GameManager {
             e.stopPropagation();
             this.mainScene.createEnemy(25);
         });
+
+        var startBtn = document.getElementById('startBtn');
+        startBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.start();
+        });
     }
 
     start(name) {
+        if (this.isStart) {
+            return;
+        }
+
         this.mainScene = new Scene(name,'map_001', 1440, 1440);
 
         // // back wall
@@ -100,8 +112,9 @@ class GameManager {
         // this.mainScene.createObstacle('block_c', 20, 27,  1, 1);
 
         this.controlReader = setInterval(this.readControl, 100, this);
+        this.isStart = true;
 
-        requestAnimationFrame(this.render);
+        this.frameRequest = requestAnimationFrame(this.render);
     }    
 
     readControl(gm) {
@@ -110,7 +123,9 @@ class GameManager {
     }
     
     readView(x, y) {
-        this.mainScene.character.updateViewDir(x, y);
+        if (this.isStart) {
+            this.mainScene.character.updateViewDir(x, y);
+        }
     }
 
     readMovement() {
@@ -143,6 +158,14 @@ class GameManager {
         }
     }
 
+    stop() {
+        this.isStart = false;
+        this.mainScene.stop();
+
+        clearInterval(this.controlReader);
+        cancelAnimationFrame(this.frameRequest);
+    }
+
     render() {
         GAME_MANAGER
             .ctx
@@ -155,7 +178,7 @@ class GameManager {
 
         GAME_MANAGER.mainScene.draw();
 
-        requestAnimationFrame(GAME_MANAGER.render);
+        GAME_MANAGER.frameRequest = requestAnimationFrame(GAME_MANAGER.render);
     }
 }
 

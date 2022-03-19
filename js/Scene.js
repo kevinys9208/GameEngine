@@ -50,10 +50,6 @@ export default class Scene {
     }
 
     updateCharacterCoord() {
-        if (this.character.isIdle) {
-            return;
-        }
-
         this.#updateCoordByDir(this.character);
     }
 
@@ -105,6 +101,10 @@ export default class Scene {
 
             case Scene.NW:
                 t.updateScreenCoord(Scene.NN, 0.45, Scene.WW, 0.9);
+                break;
+
+            default:
+                t.updateScreenCoord(Scene.SS, 0, Scene.EE, 0);
                 break;
         }
     }
@@ -346,6 +346,11 @@ export default class Scene {
         for (let index = 0; index < amount; index++) {
             new Skeleton(this);
         }
+    }
+
+    stop() {
+        clearInterval(this.coordUpdator);
+        this.character.stop();
     }
 
     draw() {
