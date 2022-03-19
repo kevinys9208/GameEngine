@@ -1,10 +1,12 @@
+let RATIO = 1.5
+
 let TO_RADIAN = Math.PI / 180;
 
 let WF = 24;
 let EF = 23;
 let SF = 59;
 
-let CS = 5;
+let CS = 4;
 let CW = 144;
 let CH = 288;
 let CR = [
@@ -27,7 +29,7 @@ let SR = [
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 
-let ES = 3;
+let ES = 1;
 let EW = 144;
 let EH = 288;
 let ER = [
@@ -42,8 +44,8 @@ let ER = [
     { key: 'walk_shadow', src: '../resources/enemy/walk_shadow.png' }
 ];
 
-let TILE_SIZE = 36;
-let TILE_HALF = 18;
+let TILE_SIZE = 36 / RATIO;
+let TILE_HALF = 18 / RATIO;
 
 let MR = [
     { key: 'map_001', src: '../resources/map/map_001.png' }
@@ -58,4 +60,4 @@ let UR = [
     { key: 'life_back', src: '../resources/ui/life_back.png' }
 ];
 
-export { TO_RADIAN, TILE_SIZE, TILE_HALF, WF, EF, SF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR };
+export { RATIO, TO_RADIAN, TILE_SIZE, TILE_HALF, WF, EF, SF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR };

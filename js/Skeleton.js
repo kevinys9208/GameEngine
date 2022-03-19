@@ -1,4 +1,4 @@
-import { TILE_SIZE, EF, ES, EW, EH } from './Resource.js';
+import { RATIO, TILE_HALF, EF, ES, EW, EH } from './Resource.js';
 
 import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
@@ -37,8 +37,11 @@ export default class Skeleton {
     }
 
     #initPosition() {
-        this.x = this.scene.map.offsetX + this.scene.getRandomInt(200, 1200) - this.scene.getRandomInt(200, 1200);
-        this.y = this.scene.map.offsetY + (this.scene.getRandomInt(200, 1200) + this.scene.getRandomInt(200, 1200)) / 2;
+        this.orthoX = this.scene.getRandomInt(0, 1440);
+        this.orthoY = this.scene.getRandomInt(0, 1440);
+
+        this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
+        this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
@@ -97,10 +100,10 @@ export default class Skeleton {
     }
 
     isCollision(s) {
-        if (this.orthoX < s.orthoX + TILE_SIZE &&
-            this.orthoX + TILE_SIZE > s.orthoX &&
-            this.orthoY  < s.orthoY + TILE_SIZE &&
-            this.orthoY + TILE_SIZE > s.orthoY) {
+        if (this.orthoX - TILE_HALF < s.orthoX + TILE_HALF * s.rangeX &&
+            this.orthoX + TILE_HALF > s.orthoX - TILE_HALF * s.rangeX &&
+            this.orthoY - TILE_HALF < s.orthoY + TILE_HALF * s.rangeY &&
+            this.orthoY + TILE_HALF > s.orthoY - TILE_HALF * s.rangeY) {
         
             return true;
         }
@@ -128,10 +131,10 @@ export default class Skeleton {
             0,
             this.width,
             this.height,
-            pointX - (this.width / 2),
-            pointY - (this.height / 2),
-            this.width,
-            this.height
+            pointX - ((this.width / RATIO) / 2),
+            pointY - ((this.height / RATIO) / 2),
+            (this.width / RATIO),
+            (this.height / RATIO)
         );
     }
 
@@ -142,10 +145,10 @@ export default class Skeleton {
             0, 
             this.width, 
             this.height, 
-            pointX - (this.width / 2),
-            pointY - (this.height / 2),
-            this.width,
-            this.height
+            pointX - ((this.width / RATIO) / 2),
+            pointY - ((this.height / RATIO) / 2),
+            (this.width / RATIO),
+            (this.height / RATIO)
         );
     }
 
@@ -156,10 +159,10 @@ export default class Skeleton {
             0, 
             this.lifeBack.width, 
             this.lifeBack.height, 
-            pointX - (this.lifeBack.width / 2),
-            pointY + 20,
-            this.lifeBack.width, 
-            this.lifeBack.height, 
+            pointX - ((this.lifeBack.width / RATIO) / 2),
+            pointY + (20 / RATIO),
+            (this.lifeBack.width  / RATIO), 
+            (this.lifeBack.height / RATIO), 
         );
     }
 
@@ -170,10 +173,10 @@ export default class Skeleton {
             0, 
             this.lifeBar.width, 
             this.lifeBar.height, 
-            pointX - (this.lifeBar.width / 2),
-            pointY + 20,
-            this.lifeBar.width * (this.life / this.maxLife), 
-            this.lifeBar.height, 
+            pointX - ((this.lifeBar.width / RATIO) / 2),
+            pointY + (20 / RATIO),
+            (this.lifeBar.width / RATIO) * (this.life / this.maxLife), 
+            (this.lifeBar.height / RATIO), 
         );
     }
 

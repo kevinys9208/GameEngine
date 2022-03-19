@@ -19,6 +19,7 @@ export default class Map {
         this.offsetX = (this.img.width - (width - height)) / 2;
         this.offsetY = (this.img.height - (width + height) / 2) / 2;
 
+        console.log('Map size => ' + width / TILE_SIZE + ' X ' + height / TILE_SIZE);
         console.log('Screen offset => x: ' + this.offsetX + ', y: ' + this.offsetY);
     }
 

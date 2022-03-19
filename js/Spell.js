@@ -1,8 +1,7 @@
-import { TO_RADIAN, SF, SS, SW, SH } from './resource.js';
+import { RATIO, TO_RADIAN, SF, SS, SW, SH } from './resource.js';
 
 import GameManager from './GameManager.js';
 import SrcManager from './SrcManager.js';
-import Scene from './scene.js';
 
 export default class Spell {
 
@@ -14,8 +13,8 @@ export default class Spell {
         this.width = SW;
         this.height = SH;
 
-        this.rangeX = 1;
-        this.rangeY = 1;
+        this.rangeX = 2;
+        this.rangeY = 2;
         
         this.dir = dir;
 
@@ -91,7 +90,7 @@ export default class Spell {
 
         this.#drawShadow(ctx, pointX, pointY);
 
-        pointY -= 100;
+        pointY -= ((this.height / RATIO) / 3);
 
         this.#drawImage(ctx, pointX, pointY);
     }
@@ -108,10 +107,10 @@ export default class Spell {
             0,
             this.width,
             this.height,
-            pointX - (this.width / 2),
-            pointY - (this.height / 2),
-            this.width,
-            this.height
+            pointX - ((this.width / RATIO) / 2),
+            pointY - ((this.height / RATIO) / 2),
+            (this.width / RATIO),
+            (this.height / RATIO)
         );
 
         ctx.restore();
@@ -129,10 +128,10 @@ export default class Spell {
             0,
             this.width,
             this.height,
-            pointX - (this.width / 2),
-            pointY - (this.height / 2),
-            this.width,
-            this.height
+            pointX - ((this.width / RATIO) / 2),
+            pointY - ((this.height / RATIO) / 2),
+            (this.width / RATIO),
+            (this.height / RATIO)
         );
 
         ctx.restore();

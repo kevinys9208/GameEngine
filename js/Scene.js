@@ -1,4 +1,4 @@
-import { TILE_SIZE, TILE_HALF } from './resource.js';
+import { TO_RADIAN, TILE_SIZE, TILE_HALF } from './resource.js';
 
 import SceneMap from './Map.js'
 import Character from './character.js'
@@ -307,7 +307,7 @@ export default class Scene {
     
         } else {
             const rad = Math.atan((x2 -x1) / (y1 - y2));
-            a = rad * 180 / Math.PI;
+            a = rad / TO_RADIAN;
             
             if(y2 > y1 && x2 > x1) {
                 a = 180 + a;

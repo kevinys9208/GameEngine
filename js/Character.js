@@ -1,4 +1,4 @@
-import { WF, CS, CW, CH } from './resource.js';
+import { RATIO, WF, CS, CW, CH, SH } from './resource.js';
 
 import GameManager from './GameManager.js'
 import SrcManager from './SrcManager.js';
@@ -7,7 +7,7 @@ import Spell from './Spell.js';
 
 export default class Character {
 
-    maxLife = 100
+    maxLife = 10
 
     constructor(name, scene) {
         this.id = ++GameManager.id;
@@ -46,7 +46,7 @@ export default class Character {
     }
 
     updateViewDir(x, y) {
-        var angle = this.scene.getAngle(this.x, this.y, x + this.scene.map.getOriginX(), y + this.scene.map.getOriginY());
+        var angle = this.scene.getAngle(this.x, this.y, x + this.scene.map.getOriginX(), y + this.scene.map.getOriginY() + (SH / RATIO / 3));
         this.angle = angle;
     
         if (angle > -22.5 && angle <= 22.5) {
@@ -125,7 +125,7 @@ export default class Character {
     #addDamage() {
         this.life -= 1;
 
-        if (this.life <= 0) {
+        if (this.life < 0) {
            GameManager.stop();
         }
     }
@@ -160,10 +160,10 @@ export default class Character {
             0,
             this.width,
             this.height,
-            pointX - (this.width / 2),
-            pointY - (this.height / 2),
-            this.width,
-            this.height
+            pointX - ((this.width / RATIO) / 2),
+            pointY - ((this.height / RATIO) / 2),
+            (this.width / RATIO),
+            (this.height / RATIO)
         );
     }
 
@@ -174,10 +174,10 @@ export default class Character {
             0,
             this.width,
             this.height,
-            pointX - (this.width / 2),
-            pointY - (this.height / 2),
-            this.width,
-            this.height
+            pointX - ((this.width / RATIO) / 2),
+            pointY - ((this.height / RATIO) / 2),
+            (this.width / RATIO),
+            (this.height / RATIO)
         );
     }
 
@@ -188,10 +188,10 @@ export default class Character {
             0, 
             this.lifeBack.width, 
             this.lifeBack.height, 
-            pointX - (this.lifeBack.width / 2),
+            pointX - ((this.lifeBack.width / RATIO) / 2),
             pointY + 20,
-            this.lifeBack.width, 
-            this.lifeBack.height, 
+            (this.lifeBack.width / RATIO), 
+            (this.lifeBack.height / RATIO), 
         );
     }
 
@@ -202,10 +202,10 @@ export default class Character {
             0, 
             this.lifeBar.width, 
             this.lifeBar.height, 
-            pointX - (this.lifeBar.width / 2),
+            pointX - ((this.lifeBar.width / RATIO) / 2),
             pointY + 20,
-            this.lifeBar.width * (this.life / this.maxLife), 
-            this.lifeBar.height, 
+            (this.lifeBar.width / RATIO) * (this.life / this.maxLife), 
+            (this.lifeBar.height / RATIO), 
         );
     }
 }

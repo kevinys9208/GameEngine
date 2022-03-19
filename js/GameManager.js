@@ -64,7 +64,7 @@ class GameManager {
             }
         });
         this.canvas.addEventListener('mousemove', (e) => {
-            this.readView(e.screenX, e.screenY);
+            this.readView(e.clientX, e.clientY);
         });
         this.canvas.addEventListener('contextmenu', (e) => {
             e.preventDefault();
@@ -72,16 +72,18 @@ class GameManager {
     }
 
     #initUiControl() {
-        var enemyBtn = document.getElementById('enemyBtn');
-        enemyBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.mainScene.createEnemy(25);
-        });
-
         var startBtn = document.getElementById('startBtn');
         startBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.start();
+        });
+
+        var enemyBtn = document.getElementById('enemyBtn');
+        enemyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (this.isStart) {
+                this.mainScene.createEnemy(25);
+            }
         });
     }
 
