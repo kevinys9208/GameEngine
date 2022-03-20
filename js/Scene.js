@@ -361,14 +361,20 @@ export default class Scene {
             .map
             .draw();
 
+        let aX = 0;
+        let aY = 0;
+
+        let bX = 0;
+        let bY = 0;
+
         Array
             .from(this.objectMap.values())
             .sort((a, b) => {
-                var aX = this.#getOrthoX(a.x, a.y) + (a.rangeX * TILE_HALF);
-                var aY = this.#getOrthoY(a.x, a.y) + (a.rangeY * TILE_HALF);
+                aX = this.#getOrthoX(a.x, a.y) + (a.rangeX * TILE_HALF);
+                aY = this.#getOrthoY(a.x, a.y) + (a.rangeY * TILE_HALF);
                 
-                var bX = this.#getOrthoX(b.x, b.y) + (b.rangeX * TILE_HALF);
-                var bY = this.#getOrthoY(b.x, b.y) + (b.rangeY * TILE_HALF);
+                bX = this.#getOrthoX(b.x, b.y) + (b.rangeX * TILE_HALF);
+                bY = this.#getOrthoY(b.x, b.y) + (b.rangeY * TILE_HALF);
 
                 return (aX**2 + aY**2) - (bX**2 + bY**2);
             })
