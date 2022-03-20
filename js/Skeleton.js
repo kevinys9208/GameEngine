@@ -1,4 +1,4 @@
-import { RATIO, TILE_HALF, EF, ES, EW, EH } from './Resource.js';
+import { RATIO, TO_RADIAN, TILE_HALF, EF, ES, EW, EH } from './Resource.js';
 
 import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
@@ -19,19 +19,17 @@ export default class Skeleton {
         this.width = EW;
         this.height = EH;
 
-        this.rangeX = 1;
-        this.rangeY = 1;
+        this.rangeX = 2;
+        this.rangeY = 2;
 
         this.dir = Scene.SS;
         this.#initPosition();
 
         this.life = this.maxLife;
 
-        this.reactRate = this.scene.getRandomInt(21, 210);
-
         this.fIndex = 0;
-        this.moveCount = this.reactRate;
-
+        this.fIndexUpdator = setInterval(this.updateIndex, 28, this);
+        
         this.scene.objectMap.set(this.id, this);
         this.scene.enemyMap.set(this.id, this);
     }
@@ -42,60 +40,57 @@ export default class Skeleton {
 
         this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
         this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
+
+        this.#updateDir();
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
         this.#updateX(dirX, weightX);
         this.#updateY(dirY, weightY);
         
-        this.scene.updateOrthoCoord(this);
-
-        this.#updateDir();
+        var isCollision = this.scene.updateOrthoCoord(this);
+        if (isCollision) {
+            this.#updateDir();
+        }
     }
 
     #updateDir() {
-        if (this.moveCount == this.reactRate) {
-            var angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
-    
-            if (angle > -22.5 && angle <= 22.5) {
-                this.dir = Scene.NN;
-            } else if (angle > 22.5 && angle <= 67.5) {
-                this.dir = Scene.NE;
-            } else if (angle > 67.5 && angle <= 112.5) {
-                this.dir = Scene.EE;
-            } else if (angle > 112.5 && angle <= 157.5) {
-                this.dir = Scene.SE;
-            } else if ((angle > 157.5 && angle <= 180) || (angle <= -157.5 && angle >= -180)) {
-                this.dir = Scene.SS;
-            } else if (angle <= -112.5 && angle > -157.5) {
-                this.dir = Scene.SW;
-            } else if (angle <= -67.5 && angle > -112.5) {
-                this.dir = Scene.WW;
-            } else if (angle <= -22.5 && angle > -67.5) {
-                this.dir = Scene.NW;
-            }
-        }
+        var angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
 
-        if (--this.moveCount % 2 == 0) {
-            this.#updateMoveIndex();
+        this.radian = angle * TO_RADIAN;
+        this.diagonalX = Math.sin(this.radian);
+        this.diagonalY = -Math.cos(this.radian);
+
+        if (angle > -22.5 && angle <= 22.5) {
+            this.dir = Scene.NN;
+        } else if (angle > 22.5 && angle <= 67.5) {
+            this.dir = Scene.NE;
+        } else if (angle > 67.5 && angle <= 112.5) {
+            this.dir = Scene.EE;
+        } else if (angle > 112.5 && angle <= 157.5) {
+            this.dir = Scene.SE;
+        } else if ((angle > 157.5 && angle <= 180) || (angle <= -157.5 && angle >= -180)) {
+            this.dir = Scene.SS;
+        } else if (angle <= -112.5 && angle > -157.5) {
+            this.dir = Scene.SW;
+        } else if (angle <= -67.5 && angle > -112.5) {
+            this.dir = Scene.WW;
+        } else if (angle <= -22.5 && angle > -67.5) {
+            this.dir = Scene.NW;
         }
     }
 
-    #updateX(dir, weight = 1) {
-        this.x += (ES * weight * (dir == Scene.EE ? 1 : -1));
+    #updateX() {
+        this.x += ES * this.diagonalX;
     }
 
-    #updateY(dir, weight = 1) {
-        this.y += (ES * weight * (dir == Scene.SS ? 1 : -1));
+    #updateY() {
+        this.y += ES * this.diagonalY;
     }
 
-    #updateMoveIndex() {
-        if (++this.fIndex > EF) {
-            this.fIndex = 0;
-        }
-
-        if (this.moveCount == 0) {
-            this.moveCount = this.reactRate;
+    updateIndex(s) {
+        if (++s.fIndex > EF) {
+            s.fIndex = 0;
         }
     }
 

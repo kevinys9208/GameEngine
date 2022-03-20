@@ -34,7 +34,7 @@ export default class Character {
         this.life = this.maxLife;
 
         this.fIndex = 0;
-        this.fIndexUpdator = setInterval(this.updateIndex, 24, this);
+        this.fIndexUpdator = setInterval(this.updateIndex, 28, this);
     }
 
     updateIndex(ch) {

@@ -1,4 +1,4 @@
-let RATIO = 1.5
+let RATIO = 2
 
 let TO_RADIAN = Math.PI / 180;
 
@@ -29,7 +29,7 @@ let SR = [
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 
-let ES = 1;
+let ES = 2;
 let EW = 144;
 let EH = 288;
 let ER = [
@@ -52,7 +52,8 @@ let MR = [
 ];
 
 let OR = [
-  
+    { key: 'pedestal', src: '../resources/obstacle/pedestal.png' },
+    { key: 'grave', src: '../resources/obstacle/grave.png' }
 ];
 
 let UR = [

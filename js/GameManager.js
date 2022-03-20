@@ -1,4 +1,4 @@
-import { CR, SR, MR, ER, UR } from './Resource.js'
+import { TILE_SIZE, CR, SR, MR, ER, OR, UR } from './Resource.js'
 
 import SrcManager from './SrcManager.js'
 import Scene from './scene.js';
@@ -30,7 +30,7 @@ class GameManager {
         await SrcManager.createGroup('character', CR);
         await SrcManager.createGroup('enemy', ER);
         await SrcManager.createGroup('map', MR);
-        // await SrcManager.createGroup('obstacle', OR);
+        await SrcManager.createGroup('obstacle', OR);
         await SrcManager.createGroup('spell', SR);
         await SrcManager.createGroup('ui', UR);
     }
@@ -82,7 +82,7 @@ class GameManager {
         enemyBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (this.isStart) {
-                this.mainScene.createEnemy(25);
+                this.mainScene.createEnemy(40);
             }
         });
     }
@@ -92,26 +92,25 @@ class GameManager {
             return;
         }
 
-        this.mainScene = new Scene(name,'map_001', 1440, 1440);
+        let mapX = 1440;
+        let mapY = 1440;
 
-        // // back wall
-        // this.mainScene.createObstacle(null, 0, 0, 1, 40);
-        // this.mainScene.createObstacle(null, 0, 0, 40, 1);
+        this.mainScene = new Scene(name,'map_001', mapX, mapY);
 
-        // // front wall
-        // this.mainScene.createObstacle('wall_h', 0, 39, 40, 1);
-        // this.mainScene.createObstacle('wall_v', 39, 0, 1, 40);
+        let a = 5;
+        let rangeX = (mapX / TILE_SIZE) / a;
+        let rangeY = (mapY / TILE_SIZE) / a;
 
-        // // obstacle
-        // this.mainScene.createObstacle('block_c', 8, 7,  1, 1);
-        // this.mainScene.createObstacle('block_c', 7, 31,  1, 1);
-        // this.mainScene.createObstacle('block_c', 32, 8,  1, 1);
-        // this.mainScene.createObstacle('block_c', 31, 32,  1, 1);
+        // obstacle
+        for (let index = 0; index < a**2; index++) {
+            var x = (index % a) * (rangeX) + 4;
+            var y = parseInt(index / a) * (rangeY) + 4;
 
-        // this.mainScene.createObstacle('block_c', 12, 20,  1, 1);
-        // this.mainScene.createObstacle('block_c', 19, 12,  1, 1);
-        // this.mainScene.createObstacle('block_c', 27, 19,  1, 1);
-        // this.mainScene.createObstacle('block_c', 20, 27,  1, 1);
+            var coordX = this.mainScene.getRandomInt(x, x + rangeX - 8);
+            var coordY = this.mainScene.getRandomInt(y, y + rangeY - 8);
+
+            this.mainScene.createObstacle('grave', coordX, coordY, 2, 1);
+        }
 
         this.controlReader = setInterval(this.readControl, 100, this);
         this.isStart = true;

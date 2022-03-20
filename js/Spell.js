@@ -13,8 +13,8 @@ export default class Spell {
         this.width = SW;
         this.height = SH;
 
-        this.rangeX = 2;
-        this.rangeY = 2;
+        this.rangeX = 1;
+        this.rangeY = 1;
         
         this.dir = dir;
 

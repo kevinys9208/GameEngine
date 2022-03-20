@@ -1,3 +1,5 @@
+import { RATIO } from './resource.js';
+
 import GameManager from './GameManager.js';
 import SrcManager from './SrcManager.js';
 
@@ -36,10 +38,10 @@ export default class Obstacle {
                 0,
                 this.img.width,
                 this.img.height,
-                this.x - map.getOriginX() - (this.img.width / 2),
-                this.y - map.getOriginY() - (this.img.height / 2),
-                this.img.width,
-                this.img.height
+                this.x - map.getOriginX() - (this.img.width / RATIO / 2),
+                this.y - map.getOriginY() - (this.img.height / RATIO / 2),
+                this.img.width / RATIO,
+                this.img.height / RATIO
             );
     }
 }
