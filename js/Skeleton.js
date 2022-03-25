@@ -179,6 +179,7 @@ export default class Skeleton {
         this.life -= 1;
 
         if (this.life <= 0) {
+            clearInterval(this.fIndexUpdator);
             this.scene.objectMap.delete(this.id);
             this.scene.enemyMap.delete(this.id);
         }

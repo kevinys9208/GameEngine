@@ -78,6 +78,7 @@ export default class Spell {
     }
 
     #removeFromMap() {
+        clearInterval(this.fIndexUpdator);
         this.scene.objectMap.delete(this.id);
         this.scene.spellMap.delete(this.id);
     }
