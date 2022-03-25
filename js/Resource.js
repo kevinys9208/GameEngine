@@ -33,14 +33,22 @@ let ES = 4 / RATIO;
 let EW = 144;
 let EH = 288;
 let ER = [
-    { key: 'walk_1', src: '../resources/enemy/walk_nn.png' },
-    { key: 'walk_2', src: '../resources/enemy/walk_ne.png' },
-    { key: 'walk_3', src: '../resources/enemy/walk_ee.png' },
-    { key: 'walk_4', src: '../resources/enemy/walk_se.png' },
-    { key: 'walk_5', src: '../resources/enemy/walk_ss.png' },
-    { key: 'walk_6', src: '../resources/enemy/walk_sw.png' },
-    { key: 'walk_7', src: '../resources/enemy/walk_ww.png' },
-    { key: 'walk_8', src: '../resources/enemy/walk_nw.png' },
+    { key: 's_walk_1', src: '../resources/enemy/skeleton/walk_nn.png' },
+    { key: 's_walk_2', src: '../resources/enemy/skeleton/walk_ne.png' },
+    { key: 's_walk_3', src: '../resources/enemy/skeleton/walk_ee.png' },
+    { key: 's_walk_4', src: '../resources/enemy/skeleton/walk_se.png' },
+    { key: 's_walk_5', src: '../resources/enemy/skeleton/walk_ss.png' },
+    { key: 's_walk_6', src: '../resources/enemy/skeleton/walk_sw.png' },
+    { key: 's_walk_7', src: '../resources/enemy/skeleton/walk_ww.png' },
+    { key: 's_walk_8', src: '../resources/enemy/skeleton/walk_nw.png' },
+    { key: 'v_walk_1', src: '../resources/enemy/vampire/walk_nn.png' },
+    { key: 'v_walk_2', src: '../resources/enemy/vampire/walk_ne.png' },
+    { key: 'v_walk_3', src: '../resources/enemy/vampire/walk_ee.png' },
+    { key: 'v_walk_4', src: '../resources/enemy/vampire/walk_se.png' },
+    { key: 'v_walk_5', src: '../resources/enemy/vampire/walk_ss.png' },
+    { key: 'v_walk_6', src: '../resources/enemy/vampire/walk_sw.png' },
+    { key: 'v_walk_7', src: '../resources/enemy/vampire/walk_ww.png' },
+    { key: 'v_walk_8', src: '../resources/enemy/vampire/walk_nw.png' },
     { key: 'walk_shadow', src: '../resources/enemy/walk_shadow.png' }
 ];
 

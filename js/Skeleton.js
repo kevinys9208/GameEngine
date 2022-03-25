@@ -89,7 +89,7 @@ export default class Skeleton {
     }
 
     updateIndex(s) {
-        if (++s.fIndex > EF) {
+        if (++s.fIndex > 31) {
             s.fIndex = 0;
         }
     }
@@ -106,7 +106,7 @@ export default class Skeleton {
     }
 
     draw() {
-        var img = SrcManager.getGroup('enemy').get('walk_' + this.dir);
+        var img = SrcManager.getGroup('enemy').get('v_walk_' + this.dir);
 
         var ctx = GameManager.ctx;
 
