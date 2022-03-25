@@ -1,4 +1,4 @@
-import { RATIO, TO_RADIAN, TILE_HALF, EF, ES, EW, EH } from './Resource.js';
+import { RATIO, TO_RADIAN, TILE_HALF, E_SF, ES, EW, EH } from './Resource.js';
 
 import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
@@ -89,7 +89,7 @@ export default class Skeleton {
     }
 
     updateIndex(s) {
-        if (++s.fIndex > 31) {
+        if (++s.fIndex > E_SF) {
             s.fIndex = 0;
         }
     }
@@ -106,7 +106,7 @@ export default class Skeleton {
     }
 
     draw() {
-        var img = SrcManager.getGroup('enemy').get('v_walk_' + this.dir);
+        var img = SrcManager.getGroup('enemy').get('s_walk_' + this.dir);
 
         var ctx = GameManager.ctx;
 

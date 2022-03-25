@@ -1,4 +1,4 @@
-import { RATIO, WF, CS, CW, CH, SH } from './resource.js';
+import { RATIO, C_WF, CS, CW, CH, SH } from './resource.js';
 
 import GameManager from './GameManager.js'
 import SrcManager from './SrcManager.js';
@@ -39,7 +39,7 @@ export default class Character {
 
     updateIndex(ch) {
         if (!ch.isIdle) {
-            if (++ch.fIndex > WF) {
+            if (++ch.fIndex > C_WF) {
                 ch.fIndex = 1;
             }
         }

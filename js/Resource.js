@@ -2,9 +2,10 @@ let RATIO = 1.5
 
 let TO_RADIAN = Math.PI / 180;
 
-let WF = 24;
-let EF = 23;
-let SF = 59;
+let C_WF = 24;
+let E_SF = 23;
+let E_VF = 23;
+let S_MF = 59;
 
 let CS = 8 / RATIO;
 let CW = 144;
@@ -70,4 +71,4 @@ let UR = [
     { key: 'life_back', src: '../resources/ui/life_back.png' }
 ];
 
-export { RATIO, TO_RADIAN, TILE_SIZE, TILE_HALF, WF, EF, SF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR };
+export { RATIO, TO_RADIAN, TILE_SIZE, TILE_HALF, C_WF, E_SF, E_VF, S_MF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR };

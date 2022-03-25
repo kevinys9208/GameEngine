@@ -1,4 +1,4 @@
-import { RATIO, TO_RADIAN, SF, SS, SW, SH } from './resource.js';
+import { RATIO, TO_RADIAN, S_MF, SS, SW, SH } from './resource.js';
 
 import GameManager from './GameManager.js';
 import SrcManager from './SrcManager.js';
@@ -37,8 +37,8 @@ export default class Spell {
     }
 
     updateIndex(s) {
-        if (++s.fIndex > SF) {
-            s.fIndex = SF - 40;
+        if (++s.fIndex > S_MF) {
+            s.fIndex = S_MF - 40;
         }
     }
 
