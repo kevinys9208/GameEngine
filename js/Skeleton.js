@@ -35,8 +35,8 @@ export default class Skeleton {
     }
 
     #initPosition() {
-        this.orthoX = this.scene.getRandomInt(0, 1440);
-        this.orthoY = this.scene.getRandomInt(0, 1440);
+        this.orthoX = this.scene.getRandomInt(0, this.scene.map.width);
+        this.orthoY = this.scene.getRandomInt(0, this.scene.map.height);
 
         this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
         this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
@@ -95,10 +95,10 @@ export default class Skeleton {
     }
 
     isCollision(s) {
-        if (this.orthoX - TILE_HALF < s.orthoX + TILE_HALF * s.rangeX &&
-            this.orthoX + TILE_HALF > s.orthoX - TILE_HALF * s.rangeX &&
-            this.orthoY - TILE_HALF < s.orthoY + TILE_HALF * s.rangeY &&
-            this.orthoY + TILE_HALF > s.orthoY - TILE_HALF * s.rangeY) {
+        if (this.orthoX - TILE_HALF * this.rangeX < s.orthoX + TILE_HALF * s.rangeX &&
+            this.orthoX + TILE_HALF * this.rangeX > s.orthoX - TILE_HALF * s.rangeX &&
+            this.orthoY - TILE_HALF * this.rangeY < s.orthoY + TILE_HALF * s.rangeY &&
+            this.orthoY + TILE_HALF * this.rangeY > s.orthoY - TILE_HALF * s.rangeY) {
         
             return true;
         }

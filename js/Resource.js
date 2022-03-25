@@ -1,4 +1,4 @@
-let RATIO = 2
+let RATIO = 1.5
 
 let TO_RADIAN = Math.PI / 180;
 
@@ -6,7 +6,7 @@ let WF = 24;
 let EF = 23;
 let SF = 59;
 
-let CS = 4;
+let CS = 8 / RATIO;
 let CW = 144;
 let CH = 288;
 let CR = [
@@ -21,7 +21,7 @@ let CR = [
     { key: 'walk_shadow', src: '../resources/character/walk_shadow.png' }
 ];
 
-let SS = 9;
+let SS = 18 / RATIO;
 let SW = 288;
 let SH = 288;
 let SR = [
@@ -29,7 +29,7 @@ let SR = [
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 
-let ES = 2;
+let ES = 4 / RATIO;
 let EW = 144;
 let EH = 288;
 let ER = [
@@ -48,7 +48,8 @@ let TILE_SIZE = 36 / RATIO;
 let TILE_HALF = 18 / RATIO;
 
 let MR = [
-    { key: 'map_001', src: '../resources/map/map_001.png' }
+    { key: 'map_001', src: '../resources/map/map_001.png' },
+    { key: 'map_002', src: '../resources/map/map_002.png' }
 ];
 
 let OR = [
