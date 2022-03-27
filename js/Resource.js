@@ -1,4 +1,4 @@
-let RATIO = 2
+let RATIO = 1.5
 
 let TO_RADIAN = Math.PI / 180;
 

@@ -93,12 +93,12 @@ class GameManager {
             return;
         }
 
-        const mapX = 1440;
-        const mapY = 1440;
+        const mapX = 2160;
+        const mapY = 2160;
 
-        this.mainScene = new Scene(name,'map_001', mapX, mapY);
+        this.mainScene = new Scene(name,'map_002', mapX, mapY);
 
-        const a = 5;
+        const a = 6;
         const rangeX = (mapX / TILE_SIZE) / a;
         const rangeY = (mapY / TILE_SIZE) / a;
 
