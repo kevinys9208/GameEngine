@@ -10,9 +10,9 @@ export default class Vampire {
 
     maxLife = 5;
 
-    constructor(scene) {
+    constructor(effect) {
         this.id = ++GameManager.id;
-        this.scene = scene;
+        this.scene = effect.scene;
 
         this.lifeBar = SrcManager.getGroup('ui').get('life');
         this.lifeBack = SrcManager.getGroup('ui').get('life_back');
@@ -24,10 +24,17 @@ export default class Vampire {
         this.rangeX = 1;
         this.rangeY = 1;
 
-        this.dir = Scene.SS;
+        this.x = effect.x;
+        this.y = effect.y;
+
+        this.orthoX = effect.orthoX;
+        this.orthoY = effect.orthoY;
+
         this.#initPosition();
 
         this.life = this.maxLife;
+
+        this.isDone = false;
 
         this.fIndex = 0;
         this.fIndexUpdator = setInterval(this.updateIndex, 28, this);
@@ -37,13 +44,14 @@ export default class Vampire {
     }
 
     #initPosition() {
-        this.orthoX = this.scene.getRandomInt(0, this.scene.map.width);
-        this.orthoY = this.scene.getRandomInt(0, this.scene.map.height);
+        // this.orthoX = this.scene.getRandomInt(0, this.scene.map.width);
+        // this.orthoY = this.scene.getRandomInt(0, this.scene.map.height);
 
-        this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
-        this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
+        // this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
+        // this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
 
-        this.#updateDir();
+        this.updateViewDir();
+        this.#updateMoveDir();
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
@@ -52,11 +60,11 @@ export default class Vampire {
         
         let isCollision = this.scene.updateOrthoCoord(this);
         if (isCollision) {
-            this.#updateDir();
+            this.#updateMoveDir();
         }
     }
 
-    #updateDir() {
+    #updateMoveDir() {
         const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
 
         this.radian = angle * TO_RADIAN;
@@ -82,17 +90,40 @@ export default class Vampire {
         }
     }
 
+    updateViewDir() {
+        const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
+
+        if (angle > -22.5 && angle <= 22.5) {
+            this.viewDir = Scene.NN;
+        } else if (angle > 22.5 && angle <= 67.5) {
+            this.viewDir = Scene.NE;
+        } else if (angle > 67.5 && angle <= 112.5) {
+            this.viewDir = Scene.EE;
+        } else if (angle > 112.5 && angle <= 157.5) {
+            this.viewDir = Scene.SE;
+        } else if ((angle > 157.5 && angle <= 180) || (angle <= -157.5 && angle >= -180)) {
+            this.viewDir = Scene.SS;
+        } else if (angle <= -112.5 && angle > -157.5) {
+            this.viewDir = Scene.SW;
+        } else if (angle <= -67.5 && angle > -112.5) {
+            this.viewDir = Scene.WW;
+        } else if (angle <= -22.5 && angle > -67.5) {
+            this.viewDir = Scene.NW;
+        }
+    }
+
     #updateX() {
-        this.x += ES * this.diagonalX;
+        this.x += ES / 2 * this.diagonalX;
     }
 
     #updateY() {
-        this.y += ES * this.diagonalY;
+        this.y += ES / 2 * this.diagonalY;
     }
 
     updateIndex(v) {
         if (++v.fIndex > E_VF) {
             v.fIndex = 0;
+            v.updateViewDir();
             v.attack();
         }
     }
@@ -109,7 +140,7 @@ export default class Vampire {
     }
 
     draw() {
-        const img = SrcManager.getGroup('enemy').get('v_walk_' + this.dir);
+        const img = SrcManager.getGroup('enemy').get('v_walk_' + this.viewDir);
 
         const ctx = GameManager.ctx;
 
@@ -194,6 +225,6 @@ export default class Vampire {
 
     attack() {
         const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
-        new Spell(this.dir, this.x, this.y, this.scene, angle);
+        new Spell(this.viewDir, this.x, this.y, this.scene, angle);
     }
 }

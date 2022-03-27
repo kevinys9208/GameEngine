@@ -1,4 +1,4 @@
-import { TILE_SIZE, CR, SR, MR, ER, OR, UR } from './Resource.js'
+import { TILE_SIZE, CR, SR, MR, ER, OR, UR, FR } from './Resource.js'
 
 import SrcManager from './SrcManager.js'
 import Scene from './scene.js';
@@ -33,6 +33,7 @@ class GameManager {
         await SrcManager.createGroup('obstacle', OR);
         await SrcManager.createGroup('spell', SR);
         await SrcManager.createGroup('ui', UR);
+        await SrcManager.createGroup('effect', FR);
     }
 
     #initControl() {
@@ -92,12 +93,12 @@ class GameManager {
             return;
         }
 
-        const mapX = 2880;
-        const mapY = 2880;
+        const mapX = 1440;
+        const mapY = 1440;
 
-        this.mainScene = new Scene(name,'map_002', mapX, mapY);
+        this.mainScene = new Scene(name,'map_001', mapX, mapY);
 
-        const a = 8;
+        const a = 5;
         const rangeX = (mapX / TILE_SIZE) / a;
         const rangeY = (mapY / TILE_SIZE) / a;
 

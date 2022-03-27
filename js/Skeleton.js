@@ -8,9 +8,9 @@ export default class Skeleton {
 
     maxLife = 5;
 
-    constructor(scene) {
+    constructor(effect) {
         this.id = ++GameManager.id;
-        this.scene = scene;
+        this.scene = effect.scene;
 
         this.lifeBar = SrcManager.getGroup('ui').get('life');
         this.lifeBack = SrcManager.getGroup('ui').get('life_back');
@@ -21,6 +21,12 @@ export default class Skeleton {
 
         this.rangeX = 1;
         this.rangeY = 1;
+
+        this.x = effect.x;
+        this.y = effect.y;
+
+        this.orthoX = effect.orthoX;
+        this.orthoY = effect.orthoY;
 
         this.dir = Scene.SS;
         this.#initPosition();
@@ -35,11 +41,11 @@ export default class Skeleton {
     }
 
     #initPosition() {
-        this.orthoX = this.scene.getRandomInt(0, this.scene.map.width);
-        this.orthoY = this.scene.getRandomInt(0, this.scene.map.height);
+        // this.orthoX = this.scene.getRandomInt(0, this.scene.map.width);
+        // this.orthoY = this.scene.getRandomInt(0, this.scene.map.height);
 
-        this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
-        this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
+        // this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
+        // this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
 
         this.#updateDir();
     }

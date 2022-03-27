@@ -5,6 +5,7 @@ import Character from './character.js'
 import Obstacle from './Obstacle.js';
 import Skeleton from './Skeleton.js';
 import Vampire from './Vampire.js';
+import Effect from './Effect.js';
 
 export default class Scene {
 
@@ -356,9 +357,9 @@ export default class Scene {
     createEnemy(amount) {
         for (let index = 0; index < amount; index++) {
             if (index % 4 != 0)
-                new Skeleton(this);
+                new Effect('smoke', 'skeleton', this);
             else
-                new Vampire(this);
+                new Effect('smoke', 'vampire', this);
         }
     }
 

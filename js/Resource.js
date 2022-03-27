@@ -1,4 +1,4 @@
-let RATIO = 1.5
+let RATIO = 2
 
 let TO_RADIAN = Math.PI / 180;
 
@@ -31,7 +31,7 @@ let SR = [
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 
-let ES = 4 / RATIO;
+let ES = 6 / RATIO;
 let EW = 144;
 let EH = 288;
 let ER = [
@@ -72,4 +72,8 @@ let UR = [
     { key: 'life_back', src: '../resources/ui/life_back.png' }
 ];
 
-export { RATIO, TO_RADIAN, TILE_SIZE, TILE_HALF, C_WF, E_SF, E_VF, S_MF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR };
+let FR = [
+    { key: 'smoke', src: '../resources/effect/smoke.png' }
+];
+
+export { RATIO, TO_RADIAN, TILE_SIZE, TILE_HALF, C_WF, E_SF, E_VF, S_MF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR, FR };

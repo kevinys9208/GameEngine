@@ -13,8 +13,8 @@ export default class Spell {
         this.width = SW;
         this.height = SH;
 
-        this.rangeX = 1;
-        this.rangeY = 1;
+        this.rangeX = 2;
+        this.rangeY = 2;
         
         this.dir = dir;
 
@@ -106,10 +106,10 @@ export default class Spell {
             0,
             this.width,
             this.height,
-            pointX - ((this.width / RATIO) / 2),
-            pointY - ((this.height / RATIO) / 2),
-            (this.width / RATIO),
-            (this.height / RATIO)
+            pointX - ((this.width / RATIO)),
+            pointY - ((this.height / RATIO)),
+            (this.width / RATIO) * 2,
+            (this.height / RATIO) * 2
         );
 
         ctx.restore();
@@ -127,10 +127,10 @@ export default class Spell {
             0,
             this.width,
             this.height,
-            pointX - ((this.width / RATIO) / 2),
-            pointY - ((this.height / RATIO) / 2),
-            (this.width / RATIO),
-            (this.height / RATIO)
+            pointX - (this.width / RATIO),
+            pointY - (this.height / RATIO),
+            (this.width / RATIO) * 2,
+            (this.height / RATIO) * 2
         );
 
         ctx.restore();
