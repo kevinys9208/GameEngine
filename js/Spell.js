@@ -46,7 +46,7 @@ export default class Spell {
         this.#updateX();
         this.#updateY();
         
-        let isCollision = false;
+        var isCollision = false;
         isCollision = this.#checkEnemyCollision();
         if (isCollision) {
             this.#removeFromMap();
@@ -66,7 +66,7 @@ export default class Spell {
     }
 
     #checkEnemyCollision() {
-        let result = false;
+        var result = false;
         Array.from(this.scene.enemyMap.values()).some((v) => {
             result = v.isCollision(this);
             if (result) {

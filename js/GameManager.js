@@ -92,14 +92,14 @@ class GameManager {
             return;
         }
 
-        let mapX = 2880;
-        let mapY = 2880;
+        var mapX = 2880;
+        var mapY = 2880;
 
         this.mainScene = new Scene(name,'map_002', mapX, mapY);
 
-        let a = 8;
-        let rangeX = (mapX / TILE_SIZE) / a;
-        let rangeY = (mapY / TILE_SIZE) / a;
+        var a = 8;
+        var rangeX = (mapX / TILE_SIZE) / a;
+        var rangeY = (mapY / TILE_SIZE) / a;
 
         // obstacle
         for (let index = 0; index < a**2; index++) {
@@ -130,7 +130,7 @@ class GameManager {
     }
 
     readMovement() {
-        let dir = Scene.IDLE;
+        var dir = Scene.IDLE;
 
         if (this.controlMap.get('KeyW') && this.controlMap.get('KeyD')) {
             dir = Scene.NE;

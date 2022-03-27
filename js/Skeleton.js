@@ -19,8 +19,8 @@ export default class Skeleton {
         this.width = EW;
         this.height = EH;
 
-        this.rangeX = 2;
-        this.rangeY = 2;
+        this.rangeX = 1;
+        this.rangeY = 1;
 
         this.dir = Scene.SS;
         this.#initPosition();

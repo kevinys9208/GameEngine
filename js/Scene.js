@@ -113,9 +113,9 @@ export default class Scene {
         var orthoX = this.#getOrthoX(t.x, t.y);
         var orthoY = this.#getOrthoY(t.x, t.y);
 
-        let dir = 0;
-        let obj = null;
-        let isCollision = false;
+        var dir = 0;
+        var obj = null;
+        var isCollision = false;
 
         for (let index = 0; index < 4; index++) {
             dir = (index + 1) * 2;
@@ -160,10 +160,10 @@ export default class Scene {
     }
 
     #checkCollision(dir, t, orthoX, orthoY) {
-        let isCollision = false;
+        var isCollision = false;
 
-        let rangeX = TILE_HALF * t.rangeX;
-        let rangeY = TILE_HALF * t.rangeY;
+        var rangeX = TILE_HALF * t.rangeX;
+        var rangeY = TILE_HALF * t.rangeY;
 
         try {
             switch (dir) {
@@ -296,7 +296,7 @@ export default class Scene {
     }
 
     getAngle(x1, y1, x2, y2) {
-        let a;
+        var a;
         if(y1 == y2) {
             if(x2 < x1) {
                 a = -90;
@@ -309,7 +309,7 @@ export default class Scene {
             a = 180;
     
         } else {
-            const rad = Math.atan((x2 -x1) / (y1 - y2));
+            var rad = Math.atan((x2 -x1) / (y1 - y2));
             a = rad / TO_RADIAN;
             
             if(y2 > y1 && x2 > x1) {
@@ -361,11 +361,11 @@ export default class Scene {
             .map
             .draw();
 
-        let aX = 0;
-        let aY = 0;
+        var aX = 0;
+        var aY = 0;
 
-        let bX = 0;
-        let bY = 0;
+        var bX = 0;
+        var bY = 0;
 
         Array
             .from(this.objectMap.values())

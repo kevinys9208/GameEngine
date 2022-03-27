@@ -108,7 +108,7 @@ export default class Character {
     }
 
     #checkEnemyCollision() {
-        let result = false;
+        var result = false;
         Array.from(this.scene.enemyMap.values()).some((v) => {
             result = v.isCollision(this);
             if (result) {
