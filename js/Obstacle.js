@@ -5,8 +5,9 @@ import SrcManager from './SrcManager.js';
 
 export default class Obstacle {
 
-    constructor(img, x, y, coordX, coordY, rangeX, rangeY) {
+    constructor(img, x, y, coordX, coordY, rangeX, rangeY, scene) {
         this.id = ++GameManager.id;
+        this.scene = scene;
 
         if (img != null) {
             this.img = SrcManager.getGroup('obstacle').get(img);
@@ -43,5 +44,10 @@ export default class Obstacle {
                 this.img.width / RATIO,
                 this.img.height / RATIO
             );
+    }
+
+
+    removeFromMap() {
+        this.scene.objectMap.delete(this.id);
     }
 }

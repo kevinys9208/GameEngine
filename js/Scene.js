@@ -110,12 +110,12 @@ export default class Scene {
     }
 
     updateOrthoCoord(t) {
-        var orthoX = this.#getOrthoX(t.x, t.y);
-        var orthoY = this.#getOrthoY(t.x, t.y);
+        let orthoX = this.#getOrthoX(t.x, t.y);
+        let orthoY = this.#getOrthoY(t.x, t.y);
 
-        var dir = 0;
-        var obj = null;
-        var isCollision = false;
+        let dir = 0;
+        let obj = null;
+        let isCollision = false;
 
         for (let index = 0; index < 4; index++) {
             dir = (index + 1) * 2;
@@ -160,33 +160,40 @@ export default class Scene {
     }
 
     #checkCollision(dir, t, orthoX, orthoY) {
-        var isCollision = false;
+        let isCollision = false;
 
-        var rangeX = TILE_HALF * t.rangeX;
-        var rangeY = TILE_HALF * t.rangeY;
+        let x = 0;
+        let y = 0;
+        
+        let newOrthoX = orthoX;
+        let newOrthoY = orthoY;
+        
+        let obstacle = null;
+
+        const rangeX = TILE_HALF * t.rangeX;
+        const rangeY = TILE_HALF * t.rangeY;
 
         try {
             switch (dir) {
                 case Scene.NE:
-                    var ne = new Object();
-                    ne.x = parseInt((orthoX + rangeX) / TILE_SIZE);
-                    if (ne.x > (this.map.width / TILE_SIZE) - 1) {
+                   x = parseInt((orthoX + rangeX) / TILE_SIZE);
+                    if (x > (this.map.width / TILE_SIZE) - 1) {
                         break;
                     }
                     
-                    ne.y = parseInt((orthoY - rangeY) / TILE_SIZE);
-                    if (ne.y < 0) {
+                    y = parseInt((orthoY - rangeY) / TILE_SIZE);
+                    if (y < 0) {
                         break;
                     }
 
-                    if (this.map.resource[ne.y][ne.x] != 0) {
-                        var obstacle = this.objectMap.get(this.map.resource[ne.y][ne.x]);
+                    if (this.map.resource[y][x] != 0) {
+                        obstacle = this.objectMap.get(this.map.resource[y][x]);
 
                         if ((obstacle.coordY + obstacle.rangeY) * TILE_SIZE <= t.orthoY - rangeY) {
-                            orthoY = (obstacle.coordY + obstacle.rangeY) * TILE_SIZE + rangeY;
+                            newOrthoY = (obstacle.coordY + obstacle.rangeY) * TILE_SIZE + rangeY;
 
                         } else {
-                            orthoX = obstacle.coordX * TILE_SIZE - rangeX;
+                            newOrthoX = obstacle.coordX * TILE_SIZE - rangeX;
                         }
 
                         isCollision = true;
@@ -194,25 +201,24 @@ export default class Scene {
                     break;
 
                 case Scene.SE:
-                    var se = new Object();
-                    se.x = parseInt((orthoX + rangeX) / TILE_SIZE);
-                    if (se.x > (this.map.width / TILE_SIZE) - 1) {
+                    x = parseInt((orthoX + rangeX) / TILE_SIZE);
+                    if (x > (this.map.width / TILE_SIZE) - 1) {
                         break;
                     }
 
-                    se.y = parseInt((orthoY + rangeY) / TILE_SIZE);
-                    if (se.y > (this.map.height / TILE_SIZE) - 1) {
+                    y = parseInt((orthoY + rangeY) / TILE_SIZE);
+                    if (y > (this.map.height / TILE_SIZE) - 1) {
                         break;
                     }
             
-                    if (this.map.resource[se.y][se.x] != 0) {
-                        var obstacle = this.objectMap.get(this.map.resource[se.y][se.x]);
+                    if (this.map.resource[y][x] != 0) {
+                        obstacle = this.objectMap.get(this.map.resource[y][x]);
 
                         if (obstacle.coordX * TILE_SIZE >= t.orthoX + rangeX) {
-                            orthoX = obstacle.coordX * TILE_SIZE - rangeX;
+                            newOrthoX = obstacle.coordX * TILE_SIZE - rangeX;
 
                         } else {
-                            orthoY = obstacle.coordY * TILE_SIZE - rangeY;
+                            newOrthoY = obstacle.coordY * TILE_SIZE - rangeY;
                         }
 
                         isCollision = true;
@@ -220,25 +226,24 @@ export default class Scene {
                     break;
 
                 case Scene.SW:
-                    var sw = new Object();
-                    sw.x = parseInt((orthoX - rangeX) / TILE_SIZE);
-                    if (sw.x < 0) {
+                    x = parseInt((orthoX - rangeX) / TILE_SIZE);
+                    if (x < 0) {
                         break;
                     }
 
-                    sw.y = parseInt((orthoY + rangeY) / TILE_SIZE);
-                    if (sw.y > (this.map.height / TILE_SIZE) - 1) {
+                    y = parseInt((orthoY + rangeY) / TILE_SIZE);
+                    if (y > (this.map.height / TILE_SIZE) - 1) {
                         break;
                     }
             
-                    if (this.map.resource[sw.y][sw.x] != 0) {
-                        var obstacle = this.objectMap.get(this.map.resource[sw.y][sw.x]);
+                    if (this.map.resource[y][x] != 0) {
+                        obstacle = this.objectMap.get(this.map.resource[y][x]);
 
                         if (obstacle.coordY * TILE_SIZE >= t.orthoY + rangeY) {
-                            orthoY = obstacle.coordY * TILE_SIZE - rangeY;
+                            newOrthoY = obstacle.coordY * TILE_SIZE - rangeY;
 
                         } else {
-                            orthoX = (obstacle.coordX + obstacle.rangeX)  * TILE_SIZE + rangeX;
+                            newOrthoX = (obstacle.coordX + obstacle.rangeX)  * TILE_SIZE + rangeX;
                         }
 
                         isCollision = true;
@@ -246,25 +251,24 @@ export default class Scene {
                     break;
 
                 case Scene.NW:
-                    var nw = new Object();
-                    nw.x = parseInt((orthoX - rangeX) / TILE_SIZE);
-                    if (nw.x < 0) {
+                    x = parseInt((orthoX - rangeX) / TILE_SIZE);
+                    if (x < 0) {
                         break;
                     }
 
-                    nw.y = parseInt((orthoY - rangeY) / TILE_SIZE);
-                    if (nw.y < 0) {
+                    y = parseInt((orthoY - rangeY) / TILE_SIZE);
+                    if (y < 0) {
                         break;
                     }
             
-                    if (this.map.resource[nw.y][nw.x] != 0) {
-                        var obstacle = this.objectMap.get(this.map.resource[nw.y][nw.x]);
+                    if (this.map.resource[y][x] != 0) {
+                        obstacle = this.objectMap.get(this.map.resource[y][x]);
 
                         if ((obstacle.coordX + obstacle.rangeX) * TILE_SIZE <= t.orthoX - rangeX) {
-                            orthoX = (obstacle.coordX + obstacle.rangeX) * TILE_SIZE + rangeX;
+                            newOrthoX = (obstacle.coordX + obstacle.rangeX) * TILE_SIZE + rangeX;
 
                         } else {
-                            orthoY = (obstacle.coordY + obstacle.rangeY)  * TILE_SIZE + rangeY;
+                            newOrthoY = (obstacle.coordY + obstacle.rangeY)  * TILE_SIZE + rangeY;
                         }
 
                         isCollision = true;
@@ -276,7 +280,7 @@ export default class Scene {
             console.log('Error is occured on checkCollision [ ' + error + ' ]');
         }
 
-        return { x: orthoX, y: orthoY, isCollision: isCollision };
+        return { x: newOrthoX, y: newOrthoY, isCollision: isCollision };
     }
 
     #getOrthoX(x, y) {
@@ -296,7 +300,7 @@ export default class Scene {
     }
 
     getAngle(x1, y1, x2, y2) {
-        var a;
+        let a;
         if(y1 == y2) {
             if(x2 < x1) {
                 a = -90;
@@ -309,7 +313,7 @@ export default class Scene {
             a = 180;
     
         } else {
-            var rad = Math.atan((x2 -x1) / (y1 - y2));
+            const rad = Math.atan((x2 -x1) / (y1 - y2));
             a = rad / TO_RADIAN;
             
             if(y2 > y1 && x2 > x1) {
@@ -328,17 +332,18 @@ export default class Scene {
     }
 
     createObstacle(img, coordX, coordY, rangeX, rangeY) {
-        var x = (coordX * TILE_SIZE + (coordX + rangeX) * TILE_SIZE) / 2;
-        var y = (coordY * TILE_SIZE + (coordY + rangeY) * TILE_SIZE) / 2;
+        const x = (coordX * TILE_SIZE + (coordX + rangeX) * TILE_SIZE) / 2;
+        const y = (coordY * TILE_SIZE + (coordY + rangeY) * TILE_SIZE) / 2;
 
-        var obstacle = new Obstacle(
+        let obstacle = new Obstacle(
                                 img, 
                                 this.#getScreenX(x, y),
                                 this.#getScreenY(x, y),
                                 coordX,
                                 coordY,
                                 rangeX,
-                                rangeY
+                                rangeY,
+                                this
                             );
 
         this.objectMap.set(obstacle.id, obstacle);
@@ -353,7 +358,9 @@ export default class Scene {
 
     stop() {
         clearInterval(this.coordUpdator);
-        this.character.stop();
+        Array
+            .from(this.objectMap.values())
+            .forEach(o => o.removeFromMap());
     }
 
     draw() {
@@ -361,20 +368,14 @@ export default class Scene {
             .map
             .draw();
 
-        var aX = 0;
-        var aY = 0;
-
-        var bX = 0;
-        var bY = 0;
-
         Array
             .from(this.objectMap.values())
             .sort((a, b) => {
-                aX = this.#getOrthoX(a.x, a.y) + (a.rangeX * TILE_HALF);
-                aY = this.#getOrthoY(a.x, a.y) + (a.rangeY * TILE_HALF);
+                let aX = this.#getOrthoX(a.x, a.y) + (a.rangeX * TILE_HALF);
+                let aY = this.#getOrthoY(a.x, a.y) + (a.rangeY * TILE_HALF);
                 
-                bX = this.#getOrthoX(b.x, b.y) + (b.rangeX * TILE_HALF);
-                bY = this.#getOrthoY(b.x, b.y) + (b.rangeY * TILE_HALF);
+                let bX = this.#getOrthoX(b.x, b.y) + (b.rangeX * TILE_HALF);
+                let bY = this.#getOrthoY(b.x, b.y) + (b.rangeY * TILE_HALF);
 
                 return (aX**2 + aY**2) - (bX**2 + bY**2);
             })

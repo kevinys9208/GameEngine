@@ -48,14 +48,14 @@ export default class Skeleton {
         this.#updateX(dirX, weightX);
         this.#updateY(dirY, weightY);
         
-        var isCollision = this.scene.updateOrthoCoord(this);
+        const isCollision = this.scene.updateOrthoCoord(this);
         if (isCollision) {
             this.#updateDir();
         }
     }
 
     #updateDir() {
-        var angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
+        const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
 
         this.radian = angle * TO_RADIAN;
         this.diagonalX = Math.sin(this.radian);
@@ -106,12 +106,12 @@ export default class Skeleton {
     }
 
     draw() {
-        var img = SrcManager.getGroup('enemy').get('s_walk_' + this.dir);
+        const img = SrcManager.getGroup('enemy').get('s_walk_' + this.dir);
 
-        var ctx = GameManager.ctx;
+        const ctx = GameManager.ctx;
 
-        var pointX = this.x - this.scene.map.getOriginX();
-        var pointY = this.y - this.scene.map.getOriginY();
+        const pointX = this.x - this.scene.map.getOriginX();
+        const pointY = this.y - this.scene.map.getOriginY();
 
         this.#drawShadow(ctx, pointX, pointY);
         this.#drawImage(ctx, img, pointX, pointY);
@@ -179,9 +179,13 @@ export default class Skeleton {
         this.life -= 1;
 
         if (this.life <= 0) {
-            clearInterval(this.fIndexUpdator);
-            this.scene.objectMap.delete(this.id);
-            this.scene.enemyMap.delete(this.id);
+           this.removeFromMap();
         }
+    }
+
+    removeFromMap() {
+        clearInterval(this.fIndexUpdator);
+        this.scene.objectMap.delete(this.id);
+        this.scene.enemyMap.delete(this.id);
     }
 }

@@ -15,10 +15,10 @@ class SrcManager {
     }
 
     async loadGroup(name, list) {
-        var group = this.groupMap.get(name);
+        const group = this.groupMap.get(name);
 
         list.forEach(o => {
-            var img = new Image();
+            let img = new Image();
             img.src = o.src;
             img.onload = function () {
                 group.set(o.key, img);

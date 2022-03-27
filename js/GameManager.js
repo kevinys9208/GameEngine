@@ -72,13 +72,13 @@ class GameManager {
     }
 
     #initUiControl() {
-        var startBtn = document.getElementById('startBtn');
+        const startBtn = document.getElementById('startBtn');
         startBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.start();
         });
 
-        var enemyBtn = document.getElementById('enemyBtn');
+        const enemyBtn = document.getElementById('enemyBtn');
         enemyBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (this.isStart) {
@@ -92,22 +92,28 @@ class GameManager {
             return;
         }
 
-        var mapX = 2880;
-        var mapY = 2880;
+        const mapX = 2880;
+        const mapY = 2880;
 
         this.mainScene = new Scene(name,'map_002', mapX, mapY);
 
-        var a = 8;
-        var rangeX = (mapX / TILE_SIZE) / a;
-        var rangeY = (mapY / TILE_SIZE) / a;
+        const a = 8;
+        const rangeX = (mapX / TILE_SIZE) / a;
+        const rangeY = (mapY / TILE_SIZE) / a;
+
+        let x;
+        let y;
+
+        let coordX;
+        let coordY;
 
         // obstacle
         for (let index = 0; index < a**2; index++) {
-            var x = (index % a) * (rangeX) + 4;
-            var y = parseInt(index / a) * (rangeY) + 4;
+            x = (index % a) * (rangeX) + 4;
+            y = parseInt(index / a) * (rangeY) + 4;
 
-            var coordX = this.mainScene.getRandomInt(x, x + rangeX - 8);
-            var coordY = this.mainScene.getRandomInt(y, y + rangeY - 8);
+            coordX = this.mainScene.getRandomInt(x, x + rangeX - 8);
+            coordY = this.mainScene.getRandomInt(y, y + rangeY - 8);
 
             this.mainScene.createObstacle('grave', coordX, coordY, 2, 1);
         }
@@ -130,7 +136,7 @@ class GameManager {
     }
 
     readMovement() {
-        var dir = Scene.IDLE;
+        let dir = Scene.IDLE;
 
         if (this.controlMap.get('KeyW') && this.controlMap.get('KeyD')) {
             dir = Scene.NE;

@@ -46,14 +46,14 @@ export default class Spell {
         this.#updateX();
         this.#updateY();
         
-        var isCollision = false;
+        let isCollision = false;
         isCollision = this.#checkEnemyCollision();
         if (isCollision) {
-            this.#removeFromMap();
+            this.removeFromMap();
         }
         isCollision = this.scene.updateOrthoCoord(this);
         if (isCollision) {
-            this.#removeFromMap();
+            this.removeFromMap();
         }
     }
 
@@ -66,28 +66,26 @@ export default class Spell {
     }
 
     #checkEnemyCollision() {
-        var result = false;
-        Array.from(this.scene.enemyMap.values()).some((v) => {
-            result = v.isCollision(this);
+        return Array.from(this.scene.enemyMap.values()).some((v) => {
+            let result = v.isCollision(this);
             if (result) {
                 v.addDamage();
                 return result;
             }
         });
-        return result;
     }
 
-    #removeFromMap() {
+    removeFromMap() {
         clearInterval(this.fIndexUpdator);
         this.scene.objectMap.delete(this.id);
         this.scene.spellMap.delete(this.id);
     }
 
     draw(map) {
-        var ctx = GameManager.ctx;
+        const ctx = GameManager.ctx;
 
-        var pointX = this.x - map.getOriginX();
-        var pointY = this.y - map.getOriginY();
+        const pointX = this.x - map.getOriginX();
+        let pointY = this.y - map.getOriginY();
 
         this.#drawShadow(ctx, pointX, pointY);
 

@@ -46,7 +46,7 @@ export default class Character {
     }
 
     updateViewDir(x, y) {
-        var angle = this.scene.getAngle(this.x, this.y, x + this.scene.map.getOriginX(), y + this.scene.map.getOriginY() + (SH / RATIO / 3));
+        const angle = this.scene.getAngle(this.x, this.y, x + this.scene.map.getOriginX(), y + this.scene.map.getOriginY() + (SH / RATIO / 3));
         this.angle = angle;
     
         if (angle > -22.5 && angle <= 22.5) {
@@ -80,8 +80,10 @@ export default class Character {
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
+        let isCollision = false;
+
         if (this.isIdle) {
-            var isCollision = this.#checkEnemyCollision();
+            isCollision = this.#checkEnemyCollision();
             if (isCollision) {
                 this.#addDamage();
             }
@@ -93,7 +95,7 @@ export default class Character {
 
         this.scene.updateOrthoCoord(this);
 
-        var isCollision = this.#checkEnemyCollision();
+        isCollision = this.#checkEnemyCollision();
         if (isCollision) {
             this.#addDamage();
         }
@@ -108,14 +110,9 @@ export default class Character {
     }
 
     #checkEnemyCollision() {
-        var result = false;
-        Array.from(this.scene.enemyMap.values()).some((v) => {
-            result = v.isCollision(this);
-            if (result) {
-                return result;
-            }
+        return Array.from(this.scene.enemyMap.values()).some((v) => {
+            return v.isCollision(this);
         });
-        return result;
     }
 
     attack() {
@@ -130,22 +127,18 @@ export default class Character {
         }
     }
 
-    stop() {
-        clearInterval(this.fIndexUpdator);
-    }
-
-    draw(map) {
-        var img = SrcManager.getGroup('character').get('walk_' + this.viewDir);
-        var index = this.fIndex;
+    draw() {
+        const img = SrcManager.getGroup('character').get('walk_' + this.viewDir);
+        let index = this.fIndex;
 
         if (this.isIdle) {
             index = 0;
         }
 
-        var ctx = GameManager.ctx;
+        const ctx = GameManager.ctx;
 
-        var pointX = this.x - map.getOriginX();
-        var pointY = this.y - map.getOriginY();
+        const pointX = this.x - this.scene.map.getOriginX();
+        const pointY = this.y - this.scene.map.getOriginY();
 
         this.#drawShadow(ctx, pointX, pointY);
         this.#drawImage(ctx, img, index, pointX, pointY);
@@ -207,5 +200,10 @@ export default class Character {
             (this.lifeBar.width / RATIO) * (this.life / this.maxLife), 
             (this.lifeBar.height / RATIO), 
         );
+    }
+
+    removeFromMap() {
+        clearInterval(this.fIndexUpdator);
+        this.scene.objectMap.delete(this.id);
     }
 }
