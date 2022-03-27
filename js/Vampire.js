@@ -1,99 +1,100 @@
-import { RATIO, TILE_HALF, C_WF, CS, CW, CH, SH } from './resource.js';
+import { RATIO, TO_RADIAN, TILE_HALF, E_VF, ES, EW, EH } from './Resource.js';
 
-import GameManager from './GameManager.js'
+import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
-import Scene from './scene.js';
-import Spell from './Spell.js';
+import Scene from "./scene.js";
 
-export default class Character {
+import Spell from './Espell.js';
 
-    maxLife = 10
+export default class Vampire {
 
-    constructor(name, scene) {
+    maxLife = 5;
+
+    constructor(scene) {
         this.id = ++GameManager.id;
-        this.name = name;
         this.scene = scene;
 
         this.lifeBar = SrcManager.getGroup('ui').get('life');
         this.lifeBack = SrcManager.getGroup('ui').get('life_back');
-        this.shadow = SrcManager.getGroup('character').get('walk_shadow');
+        this.shadow = SrcManager.getGroup('enemy').get('walk_shadow');
 
-        this.width = CW;
-        this.height = CH;
+        this.width = EW;
+        this.height = EH;
 
         this.rangeX = 1;
         this.rangeY = 1;
 
-        this.offsetX = 0;
-        this.offsetY = 0;
-
-        this.viewDir = Scene.SS;
         this.dir = Scene.SS;
-        this.isIdle = true;
+        this.#initPosition();
 
         this.life = this.maxLife;
 
         this.fIndex = 0;
         this.fIndexUpdator = setInterval(this.updateIndex, 28, this);
+        
+        this.scene.objectMap.set(this.id, this);
+        this.scene.enemyMap.set(this.id, this);
     }
 
-    updateIndex(ch) {
-        if (!ch.isIdle) {
-            if (++ch.fIndex > C_WF) {
-                ch.fIndex = 1;
-            }
-        }
-    }
+    #initPosition() {
+        this.orthoX = this.scene.getRandomInt(0, this.scene.map.width);
+        this.orthoY = this.scene.getRandomInt(0, this.scene.map.height);
 
-    updateViewDir(x, y) {
-        const angle = this.scene.getAngle(this.x, this.y, x + this.scene.map.getOriginX(), y + this.scene.map.getOriginY() + (SH / RATIO / 3));
-        this.angle = angle;
-    
-        if (angle > -22.5 && angle <= 22.5) {
-            this.viewDir = Scene.NN;
-        } else if (angle > 22.5 && angle <= 67.5) {
-            this.viewDir = Scene.NE;
-        } else if (angle > 67.5 && angle <= 112.5) {
-            this.viewDir = Scene.EE;
-        } else if (angle > 112.5 && angle <= 157.5) {
-            this.viewDir = Scene.SE;
-        } else if ((angle > 157.5 && angle <= 180) || (angle <= -157.5 && angle >= -180)) {
-            this.viewDir = Scene.SS;
-        } else if (angle <= -112.5 && angle > -157.5) {
-            this.viewDir = Scene.SW;
-        } else if (angle <= -67.5 && angle > -112.5) {
-            this.viewDir = Scene.WW;
-        } else if (angle <= -22.5 && angle > -67.5) {
-            this.viewDir = Scene.NW;
-        }
-    }
+        this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
+        this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
 
-    updateMoveDir(dir) {
-        if (dir == Scene.IDLE) {
-            this.isIdle = true;
-            this.frameIndex = 1;
-            return;
-        }
-
-        this.dir = dir;
-        this.isIdle = false;
+        this.#updateDir();
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
-        let isCollision = false;
-
-        if (this.isIdle) {
-            isCollision = this.#checkEnemyCollision();
-            if (isCollision) {
-                this.addDamage();
-            }
-            return;
-        }
-    
         this.#updateX(dirX, weightX);
         this.#updateY(dirY, weightY);
+        
+        let isCollision = this.scene.updateOrthoCoord(this);
+        if (isCollision) {
+            this.#updateDir();
+        }
+    }
 
-        this.scene.updateOrthoCoord(this);
+    #updateDir() {
+        const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
+
+        this.radian = angle * TO_RADIAN;
+        this.diagonalX = Math.sin(this.radian);
+        this.diagonalY = -Math.cos(this.radian);
+
+        if (angle > -22.5 && angle <= 22.5) {
+            this.dir = Scene.NN;
+        } else if (angle > 22.5 && angle <= 67.5) {
+            this.dir = Scene.NE;
+        } else if (angle > 67.5 && angle <= 112.5) {
+            this.dir = Scene.EE;
+        } else if (angle > 112.5 && angle <= 157.5) {
+            this.dir = Scene.SE;
+        } else if ((angle > 157.5 && angle <= 180) || (angle <= -157.5 && angle >= -180)) {
+            this.dir = Scene.SS;
+        } else if (angle <= -112.5 && angle > -157.5) {
+            this.dir = Scene.SW;
+        } else if (angle <= -67.5 && angle > -112.5) {
+            this.dir = Scene.WW;
+        } else if (angle <= -22.5 && angle > -67.5) {
+            this.dir = Scene.NW;
+        }
+    }
+
+    #updateX() {
+        this.x += ES * this.diagonalX;
+    }
+
+    #updateY() {
+        this.y += ES * this.diagonalY;
+    }
+
+    updateIndex(v) {
+        if (++v.fIndex > E_VF) {
+            v.fIndex = 0;
+            v.attack();
+        }
     }
 
     isCollision(s) {
@@ -107,39 +108,8 @@ export default class Character {
         return false;
     }
 
-    #updateX(dir, weight = 1) {
-        this.x += (CS * weight * (dir == Scene.EE ? 1 : -1));
-    }
-
-    #updateY(dir, weight = 1) {
-        this.y += (CS * weight * (dir == Scene.SS ? 1 : -1));
-    }
-
-    #checkEnemyCollision() {
-        return Array.from(this.scene.enemyMap.values()).some((v) => {
-            return v.isCollision(this);
-        });
-    }
-
-    attack() {
-        new Spell(this.viewDir, this.x, this.y, this.scene, this.angle);
-    }
-
-    addDamage() {
-        this.life -= 1;
-
-        if (this.life < 0) {
-           GameManager.stop();
-        }
-    }
-
     draw() {
-        const img = SrcManager.getGroup('character').get('walk_' + this.viewDir);
-        let index = this.fIndex;
-
-        if (this.isIdle) {
-            index = 0;
-        }
+        const img = SrcManager.getGroup('enemy').get('v_walk_' + this.dir);
 
         const ctx = GameManager.ctx;
 
@@ -147,9 +117,9 @@ export default class Character {
         const pointY = this.y - this.scene.map.getOriginY();
 
         this.#drawShadow(ctx, pointX, pointY);
-        this.#drawImage(ctx, img, index, pointX, pointY);
-        this.#drawLifeBack(ctx, pointX,pointY)
-        this.#drawLifeBar(ctx, pointX, pointY);
+        this.#drawImage(ctx, img, pointX, pointY);
+        this.#drawLifeBack(ctx, pointX, pointY);
+        this.#drawLifeBar(ctx, pointX, pointY);  
     }
 
     #drawShadow(ctx, pointX, pointY) {
@@ -166,13 +136,13 @@ export default class Character {
         );
     }
 
-    #drawImage(ctx, img, index, pointX, pointY) {
+    #drawImage(ctx, img, pointX, pointY) {
         ctx.drawImage(
-            img,
-            this.width * index,
-            0,
-            this.width,
-            this.height,
+            img, 
+            this.width * this.fIndex, 
+            0, 
+            this.width, 
+            this.height, 
             pointX - ((this.width / RATIO) / 2),
             pointY - ((this.height / RATIO) / 2),
             (this.width / RATIO),
@@ -188,8 +158,8 @@ export default class Character {
             this.lifeBack.width, 
             this.lifeBack.height, 
             pointX - ((this.lifeBack.width / RATIO) / 2),
-            pointY + 20,
-            (this.lifeBack.width / RATIO), 
+            pointY + (20 / RATIO),
+            (this.lifeBack.width  / RATIO), 
             (this.lifeBack.height / RATIO), 
         );
     }
@@ -202,14 +172,28 @@ export default class Character {
             this.lifeBar.width, 
             this.lifeBar.height, 
             pointX - ((this.lifeBar.width / RATIO) / 2),
-            pointY + 20,
+            pointY + (20 / RATIO),
             (this.lifeBar.width / RATIO) * (this.life / this.maxLife), 
             (this.lifeBar.height / RATIO), 
         );
     }
 
+    addDamage() {
+        this.life -= 1;
+
+        if (this.life <= 0) {
+           this.removeFromMap();
+        }
+    }
+
     removeFromMap() {
         clearInterval(this.fIndexUpdator);
         this.scene.objectMap.delete(this.id);
+        this.scene.enemyMap.delete(this.id);
+    }
+
+    attack() {
+        const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
+        new Spell(this.dir, this.x, this.y, this.scene, angle);
     }
 }

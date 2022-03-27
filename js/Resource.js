@@ -4,7 +4,7 @@ let TO_RADIAN = Math.PI / 180;
 
 let C_WF = 24;
 let E_SF = 23;
-let E_VF = 23;
+let E_VF = 31;
 let S_MF = 59;
 
 let CS = 8 / RATIO;
@@ -27,6 +27,7 @@ let SW = 288;
 let SH = 288;
 let SR = [
     { key: 'fireball', src: '../resources/spell/fireball.png' },
+    { key: 'poisonball', src: '../resources/spell/poisonball.png' },
     { key: 'fireball_shadow', src: '../resources/spell/fireball_shadow.png' }
 ];
 

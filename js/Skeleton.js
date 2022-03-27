@@ -48,9 +48,15 @@ export default class Skeleton {
         this.#updateX(dirX, weightX);
         this.#updateY(dirY, weightY);
         
-        const isCollision = this.scene.updateOrthoCoord(this);
+        let isCollision = false;
+        isCollision = this.scene.updateOrthoCoord(this);
         if (isCollision) {
             this.#updateDir();
+        }
+
+        isCollision = this.#checkCharacterCollision();
+        if (isCollision) {
+            this.scene.character.addDamage();
         }
     }
 
@@ -92,6 +98,10 @@ export default class Skeleton {
         if (++s.fIndex > E_SF) {
             s.fIndex = 0;
         }
+    }
+
+    #checkCharacterCollision() {
+        return this.scene.character.isCollision(this);
     }
 
     isCollision(s) {

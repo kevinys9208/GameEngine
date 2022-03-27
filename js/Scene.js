@@ -4,6 +4,7 @@ import SceneMap from './Map.js'
 import Character from './character.js'
 import Obstacle from './Obstacle.js';
 import Skeleton from './Skeleton.js';
+import Vampire from './Vampire.js';
 
 export default class Scene {
 
@@ -23,7 +24,7 @@ export default class Scene {
 
         this.objectMap = new Map();
         this.objectMap.set(this.character.id, this.character);
-
+       
         this.spellMap = new Map();
         this.enemyMap = new Map();
 
@@ -32,14 +33,16 @@ export default class Scene {
     }
 
     setCoord() {
-        var x = this.map.img.width / 2;
-        var y = this.map.img.height / 2;
+        const x = this.map.img.width / 2;
+        const y = this.map.img.height / 2;
 
         this.map.x = x;
         this.map.y = y;
 
         this.character.x = x;
         this.character.y = y;
+        this.character.orthoX = this.#getOrthoX(x, y);
+        this.character.orthoY = this.#getOrthoY(x, y);
     }
 
     updateCoord(s) {
@@ -352,7 +355,10 @@ export default class Scene {
 
     createEnemy(amount) {
         for (let index = 0; index < amount; index++) {
-            new Skeleton(this);
+            if (index % 4 != 0)
+                new Skeleton(this);
+            else
+                new Vampire(this);
         }
     }
 
