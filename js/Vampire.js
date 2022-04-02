@@ -113,11 +113,11 @@ export default class Vampire {
     }
 
     #updateX() {
-        this.x += ES / 2 * this.diagonalX;
+        this.x += ES / 3 * this.diagonalX;
     }
 
     #updateY() {
-        this.y += ES / 2 * this.diagonalY;
+        this.y += ES / 3 * this.diagonalY;
     }
 
     updateIndex(v) {

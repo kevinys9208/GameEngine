@@ -66,6 +66,10 @@ export default class Spell {
     }
 
     #checkEnemyCollision() {
+        if (this.scene.enemyMap.values().size == 0) {
+            return false;
+        }
+
         return Array.from(this.scene.enemyMap.values()).some((v) => {
             let result = v.isCollision(this);
             if (result) {

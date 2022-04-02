@@ -13,7 +13,7 @@ body {
     width: 100%;
     height: 100%;
 
-    cursor: url('../resources/ui/crosshair.png') 36 36, auto;
+    cursor: url('../resources/ui/cross.png') 26 26, auto;
 }
 
 .uiBox {
@@ -22,7 +22,7 @@ body {
     display: flex;
     justify-content: center;
 
-    background-color: #1b1c1c;
+    background-color: #1E1E1E;
 
     top: 0px;
     left: 0px;
@@ -33,15 +33,13 @@ body {
 
 .uiButton {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: larger;
+    font-size: 24px;
     font-weight: bold;
-    color: aliceblue;
+    color: #f0f8ff;
 
     background-color: rgba(0, 0, 0, 0);
 
     align-self: center;
-
-    border: 0cm;
 
     display: block;
 
