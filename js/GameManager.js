@@ -12,8 +12,8 @@ class GameManager {
         this.stage = 1;
 
         this.canvas = document.getElementById('mainCanvas');
-        this.canvas.width = document.body.clientWidth - 1;
-        this.canvas.height = document.body.clientHeight - 1;
+        this.canvas.width = document.body.clientWidth - 10;
+        this.canvas.height = document.body.clientHeight - 10;
 
         this.ctx = this.canvas.getContext('2d');
         this.controlMap = new Map();
@@ -89,14 +89,6 @@ class GameManager {
             this.start();
             console.log('Game Start.');
         });
-
-        // const enemyBtn = document.getElementById('enemyBtn');
-        // enemyBtn.addEventListener('click', (e) => {
-        //     e.stopPropagation();
-        //     if (this.isStart) {
-        //         this.mainScene.createEnemy(40);
-        //     }
-        // });
     }
 
     start(name) {

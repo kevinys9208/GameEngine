@@ -1,0 +1,11 @@
+{
+  "name": "into-the-nightmare",
+  "version": "1.0.0",
+  "description": "simple game",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "park",
+  "license": "ISC"
+}
