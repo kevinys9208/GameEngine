@@ -13,6 +13,8 @@ function createWindow () {
 
     win.loadURL(path.join(__dirname, 'main.html'));
 
+    // win.webContents.openDevTools();
+
     win.once('ready-to-show', () => {
         win.show();
     })

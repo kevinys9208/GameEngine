@@ -187,10 +187,16 @@ class GameManager {
     next() {
         this.stage++;
         this.#setHtmlText();
+
+        if (this.stage > 7) {
+            this.stop();
+            return;
+        }
+
         this.canvas.style.opacity = 0;
         setTimeout(() => {
             this.canvas.style.opacity = 1;
-        }, 1000);
+        }, 1200);
     }
 
     #setHtmlText() {
@@ -212,6 +218,9 @@ class GameManager {
                 break;
             case 7:
                 this.startBtn.innerText = 'wake up.';
+                break;
+            default:
+                this.startBtn.innerText = 'Into the nightmare';
                 break;
         }
     }
