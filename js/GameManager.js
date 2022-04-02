@@ -70,22 +70,31 @@ class GameManager {
         this.canvas.addEventListener('contextmenu', (e) => {
             e.preventDefault();
         });
+        this.canvas.addEventListener('transitionend', () => {
+            if (this.canvas.style.opacity == 1)
+                this.mainScene.createEnemy(50);
+            else if (this.canvas.style.opacity == 0)
+                this.uiBox.style.zIndex = 2;
+        });
     }
 
     #initUiControl() {
+        this.uiBox = document.getElementById('uiBox');
+
         const startBtn = document.getElementById('startBtn');
         startBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.start();
+            console.log('Game Start.');
         });
 
-        const enemyBtn = document.getElementById('enemyBtn');
-        enemyBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (this.isStart) {
-                this.mainScene.createEnemy(40);
-            }
-        });
+        // const enemyBtn = document.getElementById('enemyBtn');
+        // enemyBtn.addEventListener('click', (e) => {
+        //     e.stopPropagation();
+        //     if (this.isStart) {
+        //         this.mainScene.createEnemy(40);
+        //     }
+        // });
     }
 
     start(name) {
@@ -123,6 +132,9 @@ class GameManager {
         this.isStart = true;
 
         this.frameRequest = requestAnimationFrame(this.render);
+
+        this.canvas.style.opacity = 1;
+        this.uiBox.style.zIndex = -1;
     }    
 
     readControl(gm) {
@@ -172,6 +184,8 @@ class GameManager {
 
         clearInterval(this.controlReader);
         cancelAnimationFrame(this.frameRequest);
+
+        this.canvas.style.opacity = 0;
     }
 
     render() {
