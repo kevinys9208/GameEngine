@@ -11,6 +11,7 @@ export default class Skeleton {
     constructor(effect) {
         this.id = ++GameManager.id;
         this.scene = effect.scene;
+        this.scene.isStart = true;
 
         this.lifeBar = SrcManager.getGroup('ui').get('life');
         this.lifeBack = SrcManager.getGroup('ui').get('life_back');

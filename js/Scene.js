@@ -6,6 +6,7 @@ import Obstacle from './Obstacle.js';
 import Skeleton from './Skeleton.js';
 import Vampire from './Vampire.js';
 import Effect from './Effect.js';
+import GameManager from './GameManager.js';
 
 export default class Scene {
 
@@ -22,6 +23,8 @@ export default class Scene {
     constructor(name, map, width, height) {
         this.map = new SceneMap(map, width, height, this);
         this.character = new Character(name, this);
+
+        this.isStart = false;
 
         this.objectMap = new Map();
         this.objectMap.set(this.character.id, this.character);
@@ -356,10 +359,10 @@ export default class Scene {
 
     createEnemy(amount) {
         for (let index = 0; index < amount; index++) {
-            if (index % 4 != 0)
-                new Effect('smoke', 'skeleton', this);
-            else
+            if (index % 4 == 0 && GameManager.stage > 2)
                 new Effect('smoke', 'vampire', this);
+            else
+                new Effect('smoke', 'skeleton', this);
         }
     }
 
@@ -387,5 +390,19 @@ export default class Scene {
                 return (aX**2 + aY**2) - (bX**2 + bY**2);
             })
             .forEach((o) => o.draw(this.map));
+
+        this.#drawCount();
+    }
+
+    #drawCount() {
+        let ctx = GameManager.ctx;
+        ctx.font = '48px Franklin Gothic Medium'
+        ctx.fillStyle = '#f0f8ff';
+        ctx.fillText(this.enemyMap.size, GameManager.canvas.width / 2, 100);
+
+        if (this.isStart && this.enemyMap.size == 0 && this.spellMap.size == 0) {
+            this.isStart = false;
+            GameManager.next();
+        }
     }
 }

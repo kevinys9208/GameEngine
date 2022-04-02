@@ -9,6 +9,7 @@ class GameManager {
 
     constructor() {
         this.id = 0;
+        this.stage = 1;
 
         this.canvas = document.getElementById('mainCanvas');
         this.canvas.width = document.body.clientWidth - 1;
@@ -72,7 +73,8 @@ class GameManager {
         });
         this.canvas.addEventListener('transitionend', () => {
             if (this.canvas.style.opacity == 1)
-                this.mainScene.createEnemy(50);
+                this.mainScene.createEnemy(this.stage * 10);
+
             else if (this.canvas.style.opacity == 0)
                 this.uiBox.style.zIndex = 2;
         });
@@ -81,8 +83,8 @@ class GameManager {
     #initUiControl() {
         this.uiBox = document.getElementById('uiBox');
 
-        const startBtn = document.getElementById('startBtn');
-        startBtn.addEventListener('click', (e) => {
+        this.startBtn = document.getElementById('startBtn');
+        this.startBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.start();
             console.log('Game Start.');
@@ -185,9 +187,43 @@ class GameManager {
         clearInterval(this.controlReader);
         cancelAnimationFrame(this.frameRequest);
 
+        this.stage = 1;
+        this.startBtn.innerText = 'Into the nightmare';
         this.canvas.style.opacity = 0;
     }
 
+    next() {
+        this.stage++;
+        this.#setHtmlText();
+        this.canvas.style.opacity = 0;
+        setTimeout(() => {
+            this.canvas.style.opacity = 1;
+        }, 1000);
+    }
+
+    #setHtmlText() {
+        switch (this.stage) {
+            case 2:
+                this.startBtn.innerText = 'w... ...';
+                break;
+            case 3:
+                this.startBtn.innerText = 'wa.. ...';
+                break;
+            case 4:
+                this.startBtn.innerText = 'wak. ...';
+                break;
+            case 5:
+                this.startBtn.innerText = 'wake ...';
+                break;
+            case 6:
+                this.startBtn.innerText = 'wake u..';
+                break;
+            case 7:
+                this.startBtn.innerText = 'wake up.';
+                break;
+        }
+    }
+ 
     render() {
         GAME_MANAGER
             .ctx

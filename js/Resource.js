@@ -22,7 +22,7 @@ let CR = [
     { key: 'walk_shadow', src: '../resources/character/walk_shadow.png' }
 ];
 
-let SS = 18 / RATIO;
+let SS = 27 / RATIO;
 let SW = 288;
 let SH = 288;
 let SR = [
