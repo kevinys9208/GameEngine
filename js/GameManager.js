@@ -16,6 +16,7 @@ class GameManager {
         this.canvas.height = document.body.clientHeight - 10;
 
         this.ctx = this.canvas.getContext('2d');
+        this.ctx.textAlign = 'center';
         this.ctx.font = '48px Franklin Gothic Medium'
         this.ctx.fillStyle = '#f0f8ff';
         this.controlMap = new Map();

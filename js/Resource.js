@@ -69,7 +69,8 @@ let OR = [
 
 let UR = [
     { key: 'life', src: './resources/ui/life.png' },
-    { key: 'life_back', src: './resources/ui/life_back.png' }
+    { key: 'life_back', src: './resources/ui/life_back.png' },
+    { key: 'enemy_mark', src: './resources/ui/enemy_mark.png' }
 ];
 
 let FR = [

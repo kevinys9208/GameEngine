@@ -3,10 +3,9 @@ import { TO_RADIAN, TILE_SIZE, TILE_HALF } from './resource.js';
 import SceneMap from './Map.js'
 import Character from './character.js'
 import Obstacle from './Obstacle.js';
-import Skeleton from './Skeleton.js';
-import Vampire from './Vampire.js';
 import Effect from './Effect.js';
 import GameManager from './GameManager.js';
+import SrcManager from './SrcManager.js';
 
 export default class Scene {
 
@@ -23,6 +22,7 @@ export default class Scene {
     constructor(name, map, width, height) {
         this.map = new SceneMap(map, width, height, this);
         this.character = new Character(name, this);
+        this.enemyMark = SrcManager.getGroup('ui').get('enemy_mark');
 
         this.isStart = false;
 
@@ -396,9 +396,20 @@ export default class Scene {
 
     #drawCount() {
         let ctx = GameManager.ctx;
-        ctx.fillText(this.enemyMap.size, GameManager.canvas.width / 2, 100);
+        let enemyCount = this.enemyMap.size;
 
-        if (this.isStart && this.enemyMap.size == 0) {
+        ctx.drawImage(
+            this.enemyMark, 
+            (GameManager.canvas.width - this.enemyMark.width) / 2, 
+            70
+        );
+
+        ctx.fillText(
+            enemyCount, 
+            GameManager.canvas.width / 2, 
+            this.enemyMark.height + 140);
+
+        if (this.isStart && enemyCount == 0) {
             this.isStart = false;
             GameManager.next();
         }
