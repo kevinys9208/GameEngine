@@ -179,6 +179,7 @@ class GameManager {
         this.isStart = false;
         this.mainScene.stop();
 
+        clearTimeout(this.timeout);
         clearInterval(this.controlReader);
         cancelAnimationFrame(this.frameRequest);
 
@@ -197,7 +198,9 @@ class GameManager {
         }
 
         this.canvas.style.opacity = 0;
-        setTimeout(() => {
+
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
             this.canvas.style.opacity = 1;
         }, 1200);
     }

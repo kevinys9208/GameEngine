@@ -136,10 +136,12 @@ export default class Character {
 
         if (this.life < 0) 
            GameManager.stop();
-        else 
-            setTimeout(() => {
+        else {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
                 this.isDamaging = false;
             }, IT);
+        }
     }
 
     draw() {

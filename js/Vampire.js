@@ -225,10 +225,12 @@ export default class Vampire {
 
         if (this.life < 0) 
            this.removeFromMap();
-        else
-            setTimeout(() => {
+        else {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
                 this.isDamaging = false;
             }, IT);
+        }
     }
 
     removeFromMap() {

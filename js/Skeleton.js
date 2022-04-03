@@ -211,14 +211,16 @@ export default class Skeleton {
 
         if (this.life < 0) 
            this.removeFromMap();
-        else 
-            setTimeout(() => {
+        else  {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
                 this.isDamaging = false;
             }, IT);
-        
+        }
     }
 
     removeFromMap() {
+        clearTimeout(this.timeout);
         clearInterval(this.fIndexUpdator);
         this.scene.objectMap.delete(this.id);
         this.scene.enemyMap.delete(this.id);
