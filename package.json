@@ -20,6 +20,12 @@
   },
   "build": {
     "productName": "IntoTheNightmare",
-    "asar": false
+    "asar": false,
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "./icon.png"
+    }
   }
 }
