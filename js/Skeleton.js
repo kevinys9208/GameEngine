@@ -32,6 +32,9 @@ export default class Skeleton {
         this.dir = Scene.SS;
         this.#initPosition();
 
+        this.rate = this.scene.getRandomInt(1, 6);
+        this.rateCnt = 0;
+
         this.isDamaging = false;
 
         this.life = this.maxLife;
@@ -50,7 +53,7 @@ export default class Skeleton {
         // this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
         // this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
 
-        this.updateDir();
+        this.updateDir(this.rate);
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
@@ -59,9 +62,9 @@ export default class Skeleton {
         
         let isCollision = false;
         isCollision = this.scene.updateOrthoCoord(this);
-        // if (isCollision) {
-        //     this.updateDir();
-        // }
+        if (isCollision) {
+            this.updateDir(this.rate);
+        }
 
         isCollision = this.#checkCharacterCollision();
         if (isCollision) {
@@ -69,9 +72,17 @@ export default class Skeleton {
         }
     }
 
-    updateDir() {
-        let otherX = this.scene.character.x + (this.scene.getRandomInt(0, 576) - 288);
-        let otherY = this.scene.character.y + (this.scene.getRandomInt(0, 576) - 288);
+    updateDir(rateCnt) {
+        if (rateCnt < this.rate) {
+            return;
+        }
+        this.rateCnt = 0;
+
+        let otherX = this.scene.character.x + (this.scene.getRandomInt(0, 288) - 144);
+        let otherY = this.scene.character.y + (this.scene.getRandomInt(0, 288) - 144);
+        // let otherX = this.scene.character.x;
+        // let otherY = this.scene.character.y;
+
         let angle = this.scene.getAngle(this.x, this.y, otherX, otherY);
 
         this.radian = angle * TO_RADIAN;
@@ -108,7 +119,7 @@ export default class Skeleton {
     updateIndex(s) {
         if (++s.fIndex > E_SF) {
             s.fIndex = 0;
-            s.updateDir();
+            s.updateDir(++s.rateCnt);
         }
     }
 

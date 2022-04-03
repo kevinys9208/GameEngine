@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Gallant';
+    src: url(../resources/font/GALLANT.ttf) format('truetype');
+}
+
 html {
     margin: 0;
     padding: 0;
@@ -32,8 +37,7 @@ body {
 }
 
 .uiButton {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 30px;
+    font-family: 'Gallant';
     font-weight: bold;
     color: #f0f8ff;
 
@@ -53,4 +57,12 @@ body {
 
     opacity: 0;
     z-index: 1;
+}
+
+#startBtn {
+    font-size: 30px;
+}
+
+#startBtn:hover {
+    font-size: 120px;
 }

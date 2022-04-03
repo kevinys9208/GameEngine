@@ -17,7 +17,7 @@ class GameManager {
 
         this.ctx = this.canvas.getContext('2d');
         this.ctx.textAlign = 'center';
-        this.ctx.font = '48px Franklin Gothic Medium'
+        this.ctx.font = '48px Gallant'
         this.ctx.fillStyle = '#f0f8ff';
         this.controlMap = new Map();
 
