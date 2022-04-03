@@ -1,4 +1,4 @@
-import { RATIO, TILE_HALF, C_WF, CS, CW, CH, SH } from './resource.js';
+import { RATIO, IT, TILE_HALF, C_WF, CS, CW, CH, SH } from './resource.js';
 
 import GameManager from './GameManager.js'
 import SrcManager from './SrcManager.js';
@@ -30,6 +30,7 @@ export default class Character {
         this.viewDir = Scene.SS;
         this.dir = Scene.SS;
         this.isIdle = true;
+        this.isDamaging = false;
 
         this.life = this.maxLife;
 
@@ -126,17 +127,29 @@ export default class Character {
     }
 
     addDamage() {
+        if (this.isDamaging) {
+            return;
+        }
+
+        this.isDamaging = true;
         this.life -= 1;
 
-        if (this.life < 0) {
+        if (this.life < 0) 
            GameManager.stop();
-        }
+        else 
+            setTimeout(() => {
+                this.isDamaging = false;
+            }, IT);
     }
 
     draw() {
-        const img = SrcManager.getGroup('character').get('walk_' + this.viewDir);
-        let index = this.fIndex;
+        let img;
+        if (this.isDamaging) 
+            img = SrcManager.getGroup('character').get('dmg_' + this.viewDir);
+        else
+            img = SrcManager.getGroup('character').get('walk_' + this.viewDir);
 
+        let index = this.fIndex;
         if (this.isIdle) {
             index = 0;
         }

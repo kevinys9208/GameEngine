@@ -1,4 +1,4 @@
-import { RATIO, TO_RADIAN, TILE_HALF, E_SF, ES, EW, EH } from './Resource.js';
+import { RATIO, TO_RADIAN, IT, TILE_HALF, E_SF, ES, EW, EH } from './Resource.js';
 
 import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
@@ -31,6 +31,8 @@ export default class Skeleton {
 
         this.dir = Scene.SS;
         this.#initPosition();
+
+        this.isDamaging = false;
 
         this.life = this.maxLife;
 
@@ -126,7 +128,11 @@ export default class Skeleton {
     }
 
     draw() {
-        const img = SrcManager.getGroup('enemy').get('s_walk_' + this.dir);
+        let img;
+        if (this.isDamaging) 
+            img = SrcManager.getGroup('enemy').get('s_dmg_' + this.dir);
+        else
+            img = SrcManager.getGroup('enemy').get('s_walk_' + this.dir);
 
         const ctx = GameManager.ctx;
 
@@ -196,11 +202,20 @@ export default class Skeleton {
     }
 
     addDamage() {
+        if (this.isDamaging) {
+            return;
+        }
+
+        this.isDamaging = true;
         this.life -= 1;
 
-        if (this.life <= 0) {
+        if (this.life < 0) 
            this.removeFromMap();
-        }
+        else 
+            setTimeout(() => {
+                this.isDamaging = false;
+            }, IT);
+        
     }
 
     removeFromMap() {

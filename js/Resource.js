@@ -2,6 +2,8 @@ let RATIO = 1.5
 
 let TO_RADIAN = Math.PI / 180;
 
+let IT = 100;
+
 let C_WF = 24;
 let E_SF = 23;
 let E_VF = 31;
@@ -19,6 +21,14 @@ let CR = [
     { key: 'walk_6', src: './resources/character/walk_sw.png' },
     { key: 'walk_7', src: './resources/character/walk_ww.png' },
     { key: 'walk_8', src: './resources/character/walk_nw.png' },
+    { key: 'dmg_1', src: './resources/character/dmg_nn.png' },
+    { key: 'dmg_2', src: './resources/character/dmg_ne.png' },
+    { key: 'dmg_3', src: './resources/character/dmg_ee.png' },
+    { key: 'dmg_4', src: './resources/character/dmg_se.png' },
+    { key: 'dmg_5', src: './resources/character/dmg_ss.png' },
+    { key: 'dmg_6', src: './resources/character/dmg_sw.png' },
+    { key: 'dmg_7', src: './resources/character/dmg_ww.png' },
+    { key: 'dmg_8', src: './resources/character/dmg_nw.png' },
     { key: 'walk_shadow', src: './resources/character/walk_shadow.png' }
 ];
 
@@ -43,6 +53,14 @@ let ER = [
     { key: 's_walk_6', src: './resources/enemy/skeleton/walk_sw.png' },
     { key: 's_walk_7', src: './resources/enemy/skeleton/walk_ww.png' },
     { key: 's_walk_8', src: './resources/enemy/skeleton/walk_nw.png' },
+    { key: 's_dmg_1', src: './resources/enemy/skeleton/dmg_nn.png' },
+    { key: 's_dmg_2', src: './resources/enemy/skeleton/dmg_ne.png' },
+    { key: 's_dmg_3', src: './resources/enemy/skeleton/dmg_ee.png' },
+    { key: 's_dmg_4', src: './resources/enemy/skeleton/dmg_se.png' },
+    { key: 's_dmg_5', src: './resources/enemy/skeleton/dmg_ss.png' },
+    { key: 's_dmg_6', src: './resources/enemy/skeleton/dmg_sw.png' },
+    { key: 's_dmg_7', src: './resources/enemy/skeleton/dmg_ww.png' },
+    { key: 's_dmg_8', src: './resources/enemy/skeleton/dmg_nw.png' },
     { key: 'v_walk_1', src: './resources/enemy/vampire/walk_nn.png' },
     { key: 'v_walk_2', src: './resources/enemy/vampire/walk_ne.png' },
     { key: 'v_walk_3', src: './resources/enemy/vampire/walk_ee.png' },
@@ -51,6 +69,14 @@ let ER = [
     { key: 'v_walk_6', src: './resources/enemy/vampire/walk_sw.png' },
     { key: 'v_walk_7', src: './resources/enemy/vampire/walk_ww.png' },
     { key: 'v_walk_8', src: './resources/enemy/vampire/walk_nw.png' },
+    { key: 'v_dmg_1', src: './resources/enemy/vampire/dmg_nn.png' },
+    { key: 'v_dmg_2', src: './resources/enemy/vampire/dmg_ne.png' },
+    { key: 'v_dmg_3', src: './resources/enemy/vampire/dmg_ee.png' },
+    { key: 'v_dmg_4', src: './resources/enemy/vampire/dmg_se.png' },
+    { key: 'v_dmg_5', src: './resources/enemy/vampire/dmg_ss.png' },
+    { key: 'v_dmg_6', src: './resources/enemy/vampire/dmg_sw.png' },
+    { key: 'v_dmg_7', src: './resources/enemy/vampire/dmg_ww.png' },
+    { key: 'v_dmg_8', src: './resources/enemy/vampire/dmg_nw.png' },
     { key: 'walk_shadow', src: './resources/enemy/walk_shadow.png' }
 ];
 
@@ -77,4 +103,4 @@ let FR = [
     { key: 'smoke', src: './resources/effect/smoke.png' }
 ];
 
-export { RATIO, TO_RADIAN, TILE_SIZE, TILE_HALF, C_WF, E_SF, E_VF, S_MF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR, FR };
+export { RATIO, TO_RADIAN, IT, TILE_SIZE, TILE_HALF, C_WF, E_SF, E_VF, S_MF, CS, CW, CH, CR, SS, SW, SH, SR, ES, EW, EH, ER, MR, OR, UR, FR };

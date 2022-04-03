@@ -1,4 +1,4 @@
-import { RATIO, TO_RADIAN, TILE_HALF, E_VF, ES, EW, EH } from './Resource.js';
+import { RATIO, TO_RADIAN, IT, TILE_HALF, E_VF, ES, EW, EH } from './Resource.js';
 
 import GameManager from "./GameManager.js";
 import SrcManager from './SrcManager.js';
@@ -36,6 +36,7 @@ export default class Vampire {
         this.life = this.maxLife;
 
         this.isDone = false;
+        this.isDamaging = false;
 
         this.fIndex = 0;
         this.fIndexUpdator = setInterval(this.updateIndex, 28, this);
@@ -141,7 +142,11 @@ export default class Vampire {
     }
 
     draw() {
-        const img = SrcManager.getGroup('enemy').get('v_walk_' + this.viewDir);
+        let img;
+        if (this.isDamaging) 
+            img = SrcManager.getGroup('enemy').get('v_dmg_' + this.viewDir);
+        else
+            img = SrcManager.getGroup('enemy').get('v_walk_' + this.viewDir);
 
         const ctx = GameManager.ctx;
 
@@ -211,11 +216,19 @@ export default class Vampire {
     }
 
     addDamage() {
+        if (this.isDamaging) {
+            return;
+        }
+
+        this.isDamaging = true;
         this.life -= 1;
 
-        if (this.life <= 0) {
+        if (this.life < 0) 
            this.removeFromMap();
-        }
+        else
+            setTimeout(() => {
+                this.isDamaging = false;
+            }, IT);
     }
 
     removeFromMap() {
