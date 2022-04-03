@@ -396,11 +396,9 @@ export default class Scene {
 
     #drawCount() {
         let ctx = GameManager.ctx;
-        ctx.font = '48px Franklin Gothic Medium'
-        ctx.fillStyle = '#f0f8ff';
         ctx.fillText(this.enemyMap.size, GameManager.canvas.width / 2, 100);
 
-        if (this.isStart && this.enemyMap.size == 0 && this.spellMap.size == 0) {
+        if (this.isStart && this.enemyMap.size == 0) {
             this.isStart = false;
             GameManager.next();
         }
