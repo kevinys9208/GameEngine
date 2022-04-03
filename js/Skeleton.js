@@ -48,7 +48,7 @@ export default class Skeleton {
         // this.x = this.scene.map.offsetX + this.orthoX - this.orthoY;
         // this.y = this.scene.map.offsetY + (this.orthoX + this.orthoY) / 2;
 
-        this.#updateDir();
+        this.updateDir();
     }
 
     updateScreenCoord(dirY, weightY, dirX, weightX) {
@@ -57,9 +57,9 @@ export default class Skeleton {
         
         let isCollision = false;
         isCollision = this.scene.updateOrthoCoord(this);
-        if (isCollision) {
-            this.#updateDir();
-        }
+        // if (isCollision) {
+        //     this.updateDir();
+        // }
 
         isCollision = this.#checkCharacterCollision();
         if (isCollision) {
@@ -67,8 +67,10 @@ export default class Skeleton {
         }
     }
 
-    #updateDir() {
-        const angle = this.scene.getAngle(this.x, this.y, this.scene.character.x, this.scene.character.y);
+    updateDir() {
+        let otherX = this.scene.character.x + (this.scene.getRandomInt(0, 576) - 288);
+        let otherY = this.scene.character.y + (this.scene.getRandomInt(0, 576) - 288);
+        let angle = this.scene.getAngle(this.x, this.y, otherX, otherY);
 
         this.radian = angle * TO_RADIAN;
         this.diagonalX = Math.sin(this.radian);
@@ -104,6 +106,7 @@ export default class Skeleton {
     updateIndex(s) {
         if (++s.fIndex > E_SF) {
             s.fIndex = 0;
+            s.updateDir();
         }
     }
 
